@@ -230,7 +230,7 @@ updateSegmentData(const UpdaterConfig &config,
             });
 
             auto fwd_weights_range = segment_data.GetForwardWeights(geometry_id);
-            auto fwd_durations_range = segment_data.GetForwardDurations(geometry_id);
+            //auto fwd_durations_range = segment_data.GetForwardDurations(geometry_id);
             auto fwd_datasources_range = segment_data.GetForwardDatasources(geometry_id);
             bool fwd_was_updated = false;
             for (const auto segment_offset : util::irange<std::size_t>(0, fwd_weights_range.size()))
@@ -246,13 +246,13 @@ updateSegmentData(const UpdaterConfig &config,
                 if (auto value = segment_speed_lookup({u, v}))
                 {
                     auto segment_length = segment_lengths[segment_offset];
-                    auto new_duration = convertToDuration(value->speed, segment_length);
+                    convertToDuration(value->speed, segment_length);
                     auto new_weight =
                         convertToWeight(fwd_weights_range[segment_offset], *value, segment_length);
                     fwd_was_updated = true;
 
                     fwd_weights_range[segment_offset] = new_weight;
-                    fwd_durations_range[segment_offset] = new_duration;
+                    //fwd_durations_range[segment_offset] = new_duration;
                     fwd_datasources_range[segment_offset] = value->source;
                     counters[value->source] += 1;
                 }
@@ -267,8 +267,8 @@ updateSegmentData(const UpdaterConfig &config,
             // In this case we want it oriented from in forward directions
             auto rev_weights_range =
                 boost::adaptors::reverse(segment_data.GetReverseWeights(geometry_id));
-            auto rev_durations_range =
-                boost::adaptors::reverse(segment_data.GetReverseDurations(geometry_id));
+            // auto rev_durations_range =
+            //     boost::adaptors::reverse(segment_data.GetReverseDurations(geometry_id));
             auto rev_datasources_range =
                 boost::adaptors::reverse(segment_data.GetReverseDatasources(geometry_id));
             bool rev_was_updated = false;
@@ -286,13 +286,13 @@ updateSegmentData(const UpdaterConfig &config,
                 if (auto value = segment_speed_lookup({v, u}))
                 {
                     auto segment_length = segment_lengths[segment_offset];
-                    auto new_duration = convertToDuration(value->speed, segment_length);
+                    convertToDuration(value->speed, segment_length);
                     auto new_weight =
                         convertToWeight(rev_weights_range[segment_offset], *value, segment_length);
                     rev_was_updated = true;
 
                     rev_weights_range[segment_offset] = new_weight;
-                    rev_durations_range[segment_offset] = new_duration;
+                    //rev_durations_range[segment_offset] = new_duration;
                     rev_datasources_range[segment_offset] = value->source;
                     counters[value->source] += 1;
                 }
@@ -723,6 +723,28 @@ Updater::LoadAndUpdateEdgeExpandedGraph(std::vector<extractor::EdgeBasedEdge> &e
                                   compute_new_weight_and_duration(updated_segments[index]);
                           }
                       });
+    const auto update_node = [&](const uint32_t node_id) {
+        const auto geometry_id = node_data.GetGeometryID(node_id);
+        auto updated_iter = std::lower_bound(updated_segments.begin(),
+                                        updated_segments.end(),
+                                        geometry_id,
+                                        [](const GeometryID lhs, const GeometryID rhs) {
+                                            return std::tie(lhs.id, lhs.forward) <
+                                                    std::tie(rhs.id, rhs.forward);
+                                        });
+        if (updated_iter != updated_segments.end() && updated_iter->id == geometry_id.id &&
+        updated_iter->forward == geometry_id.forward)
+        {
+            // Find a segment with zero speed and simultaneously compute the new edge
+            // weight
+            EdgeWeight new_weight;
+            EdgeWeight new_duration;
+            std::tie(new_weight, new_duration) =
+                accumulated_segment_data[updated_iter - updated_segments.begin()];
+            node_weights[node_id] = node_weights[node_id] & 0x80000000 ? new_weight | 0x80000000 : new_weight;
+            node_durations[node_id] = new_duration;
+        }
+    };
 
     const auto update_edge = [&](extractor::EdgeBasedEdge &edge) {
         const auto node_id = edge.source;
@@ -748,9 +770,9 @@ Updater::LoadAndUpdateEdgeExpandedGraph(std::vector<extractor::EdgeBasedEdge> &e
             // only, it doesn't include the turn. We may visit the same node multiple times,
             // but we should always assign the same value here.
             BOOST_ASSERT(edge.source < node_weights.size());
-            node_weights[edge.source] =
-                node_weights[edge.source] & 0x80000000 ? new_weight | 0x80000000 : new_weight;
-            node_durations[edge.source] = new_duration;
+            // node_weights[edge.source] =
+            //     node_weights[edge.source] & 0x80000000 ? new_weight | 0x80000000 : new_weight;
+            // node_durations[edge.source] = new_duration;
 
             // We found a zero-speed edge, so we'll skip this whole edge-based-edge
             // which
@@ -764,23 +786,23 @@ Updater::LoadAndUpdateEdgeExpandedGraph(std::vector<extractor::EdgeBasedEdge> &e
             // Get the turn penalty and update to the new value if required
             auto turn_weight_penalty = turn_weight_penalties[edge.data.turn_id];
             auto turn_duration_penalty = turn_duration_penalties[edge.data.turn_id];
-            const auto num_nodes = segment_data.GetForwardGeometry(geometry_id.id).size();
-            const auto weight_min_value = static_cast<EdgeWeight>(num_nodes);
-            if (turn_weight_penalty + new_weight < weight_min_value)
-            {
-                if (turn_weight_penalty < 0)
-                {
-                    util::Log(logWARNING) << "turn penalty " << turn_weight_penalty
-                                          << " is too negative: clamping turn weight to "
-                                          << weight_min_value;
-                    turn_weight_penalty = weight_min_value - new_weight;
-                    turn_weight_penalties[edge.data.turn_id] = turn_weight_penalty;
-                }
-                else
-                {
-                    new_weight = weight_min_value;
-                }
-            }
+            //const auto num_nodes = segment_data.GetForwardGeometry(geometry_id.id).size();
+            //const auto weight_min_value = static_cast<EdgeWeight>(num_nodes);
+            // if (turn_weight_penalty + new_weight < weight_min_value)
+            // {
+            //     if (turn_weight_penalty < 0)
+            //     {
+            //         util::Log(logWARNING) << "turn penalty " << turn_weight_penalty
+            //                               << " is too negative: clamping turn weight to "
+            //                               << weight_min_value;
+            //         turn_weight_penalty = weight_min_value - new_weight;
+            //         turn_weight_penalties[edge.data.turn_id] = turn_weight_penalty;
+            //     }
+            //     else
+            //     {
+            //         new_weight = weight_min_value;
+            //     }
+            // }
 
             // Update edge weight
             edge.data.weight = new_weight + turn_weight_penalty;
@@ -790,6 +812,13 @@ Updater::LoadAndUpdateEdgeExpandedGraph(std::vector<extractor::EdgeBasedEdge> &e
 
     if (updated_segments.size() > 0)
     {
+        tbb::parallel_for(tbb::blocked_range<std::size_t>(0, number_of_edge_based_nodes),
+                        [&](const auto &range) {
+                            for (auto node_id = range.begin(); node_id < range.end(); ++node_id)
+                            {
+                                update_node(node_id);
+                            }
+                        });
         tbb::parallel_for(tbb::blocked_range<std::size_t>(0, edge_based_edge_list.size()),
                           [&](const auto &range) {
                               for (auto index = range.begin(); index < range.end(); ++index)
