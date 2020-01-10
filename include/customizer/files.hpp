@@ -89,7 +89,7 @@ writeCellMetrics(const boost::filesystem::path &path,
             }
             // 0.001m
             for(auto i : exclude_metric.distances) {
-                pb_metric->add_distances(i);
+                pb_metric->add_distances(round(i*DISTANCE_FACTOR));
             }
         }
     }

@@ -24,6 +24,7 @@
 
 
 #include <boost/assert.hpp>
+#include <cmath>
 
 namespace osrm
 {
@@ -96,6 +97,8 @@ inline void read(storage::tar::FileReader &reader,
     util::serialization::read(reader, name + "/reverse_weights", segment_data.rev_weights);
     util::serialization::read(reader, name + "/forward_durations", segment_data.fwd_durations);
     util::serialization::read(reader, name + "/reverse_durations", segment_data.rev_durations);
+    util::serialization::read(reader, name + "/distances", segment_data.distances);
+    storage::serialization::read(reader, name + "/road_classes", segment_data.road_classes);
     storage::serialization::read(
         reader, name + "/forward_data_sources", segment_data.fwd_datasources);
     storage::serialization::read(
@@ -113,14 +116,20 @@ inline void write(storage::tar::FileWriter &writer,
     util::serialization::write(writer, name + "/reverse_weights", segment_data.rev_weights);
     util::serialization::write(writer, name + "/forward_durations", segment_data.fwd_durations);
     util::serialization::write(writer, name + "/reverse_durations", segment_data.rev_durations);
+    util::serialization::write(writer, name + "/distances", segment_data.distances);
+    storage::serialization::write(writer, name + "/road_classes", segment_data.road_classes);
     storage::serialization::write(
         writer, name + "/forward_data_sources", segment_data.fwd_datasources);
     storage::serialization::write(
         writer, name + "/reverse_data_sources", segment_data.rev_datasources);
 
 
-    std::cout << "#### cnbg: " << segment_data.index.size() << ", "<< segment_data.nodes.size()
-    << ", "<< segment_data.fwd_weights.size()<< ", "<< segment_data.rev_weights.size() << std::endl;
+    std::cout << "#### cnbg segment_data size: " << std::endl
+    << "index:" << segment_data.index.size() << ", nodes:"<< segment_data.nodes.size()
+    << ", fwd_weights:"<< segment_data.fwd_weights.size()<< ", rev_weights:"<< segment_data.rev_weights.size() 
+    << ", fwd_durations:"<< segment_data.fwd_durations.size()<< ", rev_durations:" << segment_data.rev_durations.size()
+    << ", distances:"<< segment_data.distances.size()<< ", road_classes:" << segment_data.road_classes.size()
+    << std::endl;
 
     pbnbg::CompressedNbg pb_cnbg;
     for (auto i : segment_data.index){
@@ -136,7 +145,16 @@ inline void write(storage::tar::FileWriter &writer,
         pb_cnbg.add_reverse_weights(i);
     }
     for (auto i : segment_data.fwd_durations){
+        pb_cnbg.add_forward_durations(i);
+    }
+    for (auto i : segment_data.rev_durations){
+        pb_cnbg.add_reverse_durations(i);
+    }
+    for (auto i : segment_data.distances){
         pb_cnbg.add_distances(i);
+    }
+    for (auto i : segment_data.road_classes){
+        pb_cnbg.add_roadtype(i);
     }
 
     std::fstream pb_out("1.nbg.compressed.pb", std::ios::out | std::ios::binary);

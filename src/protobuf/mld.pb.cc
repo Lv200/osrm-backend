@@ -297,8 +297,8 @@ const char descriptor_table_protodef_mld_2eproto[] =
   "\005Cells\022\027\n\017source_boundary\030\001 \003(\r\022\034\n\024desti"
   "nation_boundary\030\002 \003(\r\022\036\n\005cells\030\003 \003(\0132\017.p"
   "bmld.CellData\022\024\n\014level_offset\030\004 \003(\004\"\?\n\006M"
-  "etric\022\017\n\007weights\030\001 \003(\005\022\021\n\tdistances\030\002 \003("
-  "\005\022\021\n\tdurations\030\003 \003(\005\")\n\007Metrics\022\036\n\007metri"
+  "etric\022\017\n\007weights\030\001 \003(\r\022\021\n\tdistances\030\002 \003("
+  "\004\022\021\n\tdurations\030\003 \003(\r\")\n\007Metrics\022\036\n\007metri"
   "cs\030\001 \003(\0132\r.pbmld.Metric\"T\n\010EdgeData\022\016\n\006t"
   "arget\030\001 \001(\r\022\017\n\007turn_id\030\002 \001(\r\022\022\n\nis_forwa"
   "rd\030\003 \001(\010\022\023\n\013is_backward\030\004 \001(\010\"\234\001\n\nQueryG"
@@ -2222,12 +2222,12 @@ const char* Metric::_InternalParse(const char* begin, const char* end, void* obj
     ptr = ::google::protobuf::io::Parse32(ptr, &tag);
     GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
     switch (tag >> 3) {
-      // repeated int32 weights = 1;
+      // repeated uint32 weights = 1;
       case 1: {
         if (static_cast<::google::protobuf::uint8>(tag) == 10) {
           ptr = ::google::protobuf::io::ReadSize(ptr, &size);
           GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-          parser_till_end = ::google::protobuf::internal::PackedInt32Parser;
+          parser_till_end = ::google::protobuf::internal::PackedUInt32Parser;
           object = msg->mutable_weights();
           if (size > end - ptr) goto len_delim_till_end;
           auto newend = ptr + size;
@@ -2242,12 +2242,12 @@ const char* Metric::_InternalParse(const char* begin, const char* end, void* obj
         } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 8 && (ptr += 1));
         break;
       }
-      // repeated int32 distances = 2;
+      // repeated uint64 distances = 2;
       case 2: {
         if (static_cast<::google::protobuf::uint8>(tag) == 18) {
           ptr = ::google::protobuf::io::ReadSize(ptr, &size);
           GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-          parser_till_end = ::google::protobuf::internal::PackedInt32Parser;
+          parser_till_end = ::google::protobuf::internal::PackedUInt64Parser;
           object = msg->mutable_distances();
           if (size > end - ptr) goto len_delim_till_end;
           auto newend = ptr + size;
@@ -2262,12 +2262,12 @@ const char* Metric::_InternalParse(const char* begin, const char* end, void* obj
         } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 16 && (ptr += 1));
         break;
       }
-      // repeated int32 durations = 3;
+      // repeated uint32 durations = 3;
       case 3: {
         if (static_cast<::google::protobuf::uint8>(tag) == 26) {
           ptr = ::google::protobuf::io::ReadSize(ptr, &size);
           GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-          parser_till_end = ::google::protobuf::internal::PackedInt32Parser;
+          parser_till_end = ::google::protobuf::internal::PackedUInt32Parser;
           object = msg->mutable_durations();
           if (size > end - ptr) goto len_delim_till_end;
           auto newend = ptr + size;
@@ -2312,15 +2312,15 @@ bool Metric::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated int32 weights = 1;
+      // repeated uint32 weights = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) == (10 & 0xFF)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, this->mutable_weights())));
         } else if (static_cast< ::google::protobuf::uint8>(tag) == (8 & 0xFF)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  1, 10u, input, this->mutable_weights())));
         } else {
           goto handle_unusual;
@@ -2328,31 +2328,30 @@ bool Metric::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated int32 distances = 2;
+      // repeated uint64 distances = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) == (18 & 0xFF)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, this->mutable_distances())));
         } else if (static_cast< ::google::protobuf::uint8>(tag) == (16 & 0xFF)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  1, 18u, input, this->mutable_distances())));
         } else {
           goto handle_unusual;
         }
         break;
       }
-
-      // repeated int32 durations = 3;
+      // repeated uint32 durations = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) == (26 & 0xFF)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, this->mutable_durations())));
         } else if (static_cast< ::google::protobuf::uint8>(tag) == (24 & 0xFF)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  1, 26u, input, this->mutable_durations())));
         } else {
           goto handle_unusual;
@@ -2387,36 +2386,36 @@ void Metric::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated int32 weights = 1;
+  // repeated uint32 weights = 1;
   if (this->weights_size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteTag(1, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
     output->WriteVarint32(_weights_cached_byte_size_.load(
         std::memory_order_relaxed));
   }
   for (int i = 0, n = this->weights_size(); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32NoTag(
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32NoTag(
       this->weights(i), output);
   }
 
-  // repeated int32 distances = 2;
+  // repeated uint64 distances = 2;
   if (this->distances_size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteTag(2, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
     output->WriteVarint32(_distances_cached_byte_size_.load(
         std::memory_order_relaxed));
   }
   for (int i = 0, n = this->distances_size(); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32NoTag(
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64NoTag(
       this->distances(i), output);
   }
 
-  // repeated int32 durations = 3;
+  // repeated uint32 durations = 3;
   if (this->durations_size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteTag(3, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
     output->WriteVarint32(_durations_cached_byte_size_.load(
         std::memory_order_relaxed));
   }
   for (int i = 0, n = this->durations_size(); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32NoTag(
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32NoTag(
       this->durations(i), output);
   }
 
@@ -2432,8 +2431,7 @@ void Metric::SerializeWithCachedSizes(
   // @@protoc_insertion_point(serialize_to_array_start:pbmld.Metric)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
-
-  // repeated int32 weights = 1;
+  // repeated uint32 weights = 1;
   if (this->weights_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
       1,
@@ -2443,10 +2441,10 @@ void Metric::SerializeWithCachedSizes(
         _weights_cached_byte_size_.load(std::memory_order_relaxed),
          target);
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteInt32NoTagToArray(this->weights_, target);
+      WriteUInt32NoTagToArray(this->weights_, target);
   }
 
-  // repeated int32 distances = 2;
+  // repeated uint64 distances = 2;
   if (this->distances_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
       2,
@@ -2456,10 +2454,10 @@ void Metric::SerializeWithCachedSizes(
         _distances_cached_byte_size_.load(std::memory_order_relaxed),
          target);
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteInt32NoTagToArray(this->distances_, target);
+      WriteUInt64NoTagToArray(this->distances_, target);
   }
 
-  // repeated int32 durations = 3;
+  // repeated uint32 durations = 3;
   if (this->durations_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
       3,
@@ -2469,7 +2467,7 @@ void Metric::SerializeWithCachedSizes(
         _durations_cached_byte_size_.load(std::memory_order_relaxed),
          target);
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteInt32NoTagToArray(this->durations_, target);
+      WriteUInt32NoTagToArray(this->durations_, target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -2492,11 +2490,10 @@ size_t Metric::ByteSizeLong() const {
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
-
-  // repeated int32 weights = 1;
+  // repeated uint32 weights = 1;
   {
     size_t data_size = ::google::protobuf::internal::WireFormatLite::
-      Int32Size(this->weights_);
+      UInt32Size(this->weights_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -2507,11 +2504,10 @@ size_t Metric::ByteSizeLong() const {
                                     std::memory_order_relaxed);
     total_size += data_size;
   }
-
-  // repeated int32 distances = 2;
+  // repeated uint64 distances = 2;
   {
     size_t data_size = ::google::protobuf::internal::WireFormatLite::
-      Int32Size(this->distances_);
+      UInt64Size(this->distances_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -2522,11 +2518,10 @@ size_t Metric::ByteSizeLong() const {
                                     std::memory_order_relaxed);
     total_size += data_size;
   }
-
-  // repeated int32 durations = 3;
+  // repeated uint32 durations = 3;
   {
     size_t data_size = ::google::protobuf::internal::WireFormatLite::
-      Int32Size(this->durations_);
+      UInt32Size(this->durations_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
