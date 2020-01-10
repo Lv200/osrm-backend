@@ -97,10 +97,13 @@ inline void write(storage::tar::FileWriter &writer,
      }
 
      for (auto i : graph.node_durations){
-        pb_graph.add_node_distances(i);
+        pb_graph.add_node_durations(i);
      }
      for (auto i : graph.node_weights){
         pb_graph.add_node_weights(i);
+     }
+     for (auto i : graph.node_distances){
+        pb_graph.add_node_distances(i);
      }
 
      std::fstream pb_out("1.mld.graph.pb", std::ios::out | std::ios::binary);

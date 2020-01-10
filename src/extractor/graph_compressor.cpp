@@ -270,7 +270,16 @@ void GraphCompressor::Compress(
                 const auto reverse_duration2 = rev_edge_data2.duration;
                 const auto reverse_distance2 = rev_edge_data2.distance;
 
-#ifndef NDEBUG
+                // For the compressed road, the road class must be the same
+                const auto fwd_road_class1 = fwd_edge_data1.flags.road_classification.GetPriority();
+                const auto fwd_road_class2 = fwd_edge_data2.flags.road_classification.GetPriority();
+                BOOST_ASSERT(fwd_road_class1 == fwd_road_class2);
+
+                const auto rev_road_class1 = rev_edge_data1.flags.road_classification.GetPriority();
+                const auto rev_road_class2 = rev_edge_data2.flags.road_classification.GetPriority();
+                BOOST_ASSERT(rev_road_class1 == rev_road_class2);
+
+//#ifndef NDEBUG
                 // Because distances are symmetrical, we only need one
                 // per edge - here we double-check that they match
                 // their mirrors.
@@ -278,7 +287,7 @@ void GraphCompressor::Compress(
                 const auto forward_distance1 = fwd_edge_data1.distance;
                 BOOST_ASSERT(forward_distance1 == reverse_distance2);
                 BOOST_ASSERT(forward_distance2 == reverse_distance1);
-#endif
+//#endif
 
                 BOOST_ASSERT(0 != reverse_weight1);
                 BOOST_ASSERT(0 != reverse_weight2);
@@ -325,6 +334,10 @@ void GraphCompressor::Compress(
                                                  forward_weight2,
                                                  forward_duration1,
                                                  forward_duration2,
+                                                 forward_distance1,
+                                                 forward_distance2,
+                                                 fwd_road_class1,
+                                                 fwd_road_class2,
                                                  node_weight_penalty,
                                                  node_duration_penalty);
                 geometry_compressor.CompressEdge(reverse_e1,
@@ -335,6 +348,10 @@ void GraphCompressor::Compress(
                                                  reverse_weight2,
                                                  reverse_duration1,
                                                  reverse_duration2,
+                                                 reverse_distance1,
+                                                 reverse_distance2,
+                                                 rev_road_class1,
+                                                 rev_road_class2,
                                                  node_weight_penalty,
                                                  node_duration_penalty);
             }
@@ -352,7 +369,8 @@ void GraphCompressor::Compress(
         {
             const EdgeData &data = graph.GetEdgeData(edge_id);
             const NodeID target = graph.GetTarget(edge_id);
-            geometry_compressor.AddUncompressedEdge(edge_id, target, data.weight, data.duration);
+            const auto edge_road_class = data.flags.road_classification.GetPriority();
+            geometry_compressor.AddUncompressedEdge(edge_id, target, data.weight, data.duration, data.distance, edge_road_class);
         }
     }
 }

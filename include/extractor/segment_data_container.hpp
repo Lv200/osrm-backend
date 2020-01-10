@@ -8,6 +8,8 @@
 #include "storage/shared_memory_ownership.hpp"
 #include "storage/tar_fwd.hpp"
 
+#include "extractor/road_classification.hpp"
+
 #include <boost/filesystem/path.hpp>
 #include <boost/range/adaptor/reversed.hpp>
 #include <boost/range/iterator_range.hpp>
@@ -58,7 +60,9 @@ template <storage::Ownership Ownership> class SegmentDataContainerImpl
     using SegmentNodeVector = Vector<NodeID>;
     using SegmentWeightVector = PackedVector<SegmentWeight, SEGMENT_WEIGHT_BITS>;
     using SegmentDurationVector = PackedVector<SegmentDuration, SEGMENT_DURATION_BITS>;
+    using SegmentDistanceVector = PackedVector<SegmentDistance, SEGMENT_DISTANCE_BITS>;
     using SegmentDatasourceVector = Vector<DatasourceID>;
+    using SegmentRoadClassVector = Vector<RoadPriorityClass::Enum>;
 
     SegmentDataContainerImpl() = default;
 
@@ -68,11 +72,14 @@ template <storage::Ownership Ownership> class SegmentDataContainerImpl
                              SegmentWeightVector rev_weights_,
                              SegmentDurationVector fwd_durations_,
                              SegmentDurationVector rev_durations_,
+                             SegmentDistanceVector distances_,
+                             SegmentRoadClassVector road_classes_,
                              SegmentDatasourceVector fwd_datasources_,
                              SegmentDatasourceVector rev_datasources_)
         : index(std::move(index_)), nodes(std::move(nodes_)), fwd_weights(std::move(fwd_weights_)),
           rev_weights(std::move(rev_weights_)), fwd_durations(std::move(fwd_durations_)),
-          rev_durations(std::move(rev_durations_)), fwd_datasources(std::move(fwd_datasources_)),
+          rev_durations(std::move(rev_durations_)), distances(std::move(distances_)), 
+          road_classes(std::move(road_classes_)), fwd_datasources(std::move(fwd_datasources_)),
           rev_datasources(std::move(rev_datasources_))
     {
     }
@@ -88,6 +95,22 @@ template <storage::Ownership Ownership> class SegmentDataContainerImpl
     auto GetReverseGeometry(const DirectionalGeometryID id)
     {
         return boost::adaptors::reverse(GetForwardGeometry(id));
+    }
+
+    auto GetDistances(const DirectionalGeometryID id)
+    {
+        const auto begin = distances.begin() + index[id] + 1;
+        const auto end = distances.begin() + index[id + 1];
+
+        return boost::make_iterator_range(begin, end);
+    }
+
+    auto GetRoadClasses(const DirectionalGeometryID id)
+    {
+        const auto begin = road_classes.cbegin() + index[id];
+        const auto end = road_classes.cbegin() + index[id + 1] - 1;
+
+        return boost::adaptors::reverse(boost::make_iterator_range(begin, end));
     }
 
     auto GetForwardDurations(const DirectionalGeometryID id)
@@ -151,6 +174,14 @@ template <storage::Ownership Ownership> class SegmentDataContainerImpl
         return boost::adaptors::reverse(GetForwardGeometry(id));
     }
 
+    auto GetDistances(const DirectionalGeometryID id) const
+    {
+        const auto begin = distances.begin() + index[id] + 1;
+        const auto end = distances.begin() + index[id + 1];
+
+        return boost::make_iterator_range(begin, end);
+    }
+
     auto GetForwardDurations(const DirectionalGeometryID id) const
     {
         const auto begin = fwd_durations.cbegin() + index[id] + 1;
@@ -179,6 +210,14 @@ template <storage::Ownership Ownership> class SegmentDataContainerImpl
     {
         const auto begin = rev_weights.cbegin() + index[id];
         const auto end = rev_weights.cbegin() + index[id + 1] - 1;
+
+        return boost::adaptors::reverse(boost::make_iterator_range(begin, end));
+    }
+
+    auto GetRoadClasses(const DirectionalGeometryID id) const
+    {
+        const auto begin = road_classes.cbegin() + index[id];
+        const auto end = road_classes.cbegin() + index[id + 1] - 1;
 
         return boost::adaptors::reverse(boost::make_iterator_range(begin, end));
     }
@@ -218,6 +257,8 @@ template <storage::Ownership Ownership> class SegmentDataContainerImpl
     SegmentWeightVector rev_weights;
     SegmentDurationVector fwd_durations;
     SegmentDurationVector rev_durations;
+    SegmentDistanceVector distances;
+    SegmentRoadClassVector road_classes;
     SegmentDatasourceVector fwd_datasources;
     SegmentDatasourceVector rev_datasources;
 };
