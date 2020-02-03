@@ -802,7 +802,6 @@ class Metric :
   const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
       durations() const;
   ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
->>>>>>> Distances caculated in osrm are all maintained float type, only change the data type when write out to .pb files
       mutable_durations();
 
   // @@protoc_insertion_point(class_scope:pbmld.Metric)

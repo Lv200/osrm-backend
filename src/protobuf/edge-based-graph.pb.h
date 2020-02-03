@@ -222,7 +222,6 @@ class EdgeBasedNode :
 };
 // -------------------------------------------------------------------
 
-
 class NodeBasedAnnotation :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:pbebg.NodeBasedAnnotation) */ {
  public:

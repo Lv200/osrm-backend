@@ -33,15 +33,9 @@ message Cells {
 
 
 message Metric {
-<<<<<<< HEAD
-    repeated int32 weights = 1;
-    repeated int32 distances = 2;
-    repeated int32 durations = 3;
-=======
     repeated uint32 weights = 1;
     repeated uint64 distances = 2;
     repeated uint32 durations = 3;
->>>>>>> Distances caculated in osrm are all maintained float type, only change the data type when write out to .pb files
 }
 
 message Metrics {

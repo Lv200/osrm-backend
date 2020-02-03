@@ -992,7 +992,6 @@ CompressedNbg::mutable_reverse_durations() {
 }
 
 // repeated uint32 roadType = 8;
->>>>>>> Distances caculated in osrm are all maintained float type, only change the data type when write out to .pb files
 inline int CompressedNbg::roadtype_size() const {
   return roadtype_.size();
 }

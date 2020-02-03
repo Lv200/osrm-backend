@@ -1257,7 +1257,6 @@ bool CompressedNbg::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  1, 66u, input, this->mutable_roadtype())));
->>>>>>> Distances caculated in osrm are all maintained float type, only change the data type when write out to .pb files
         } else {
           goto handle_unusual;
         }
@@ -1494,7 +1493,6 @@ void CompressedNbg::SerializeWithCachedSizes(
          target);
     target = ::google::protobuf::internal::WireFormatLite::
       WriteUInt32NoTagToArray(this->roadtype_, target);
->>>>>>> Distances caculated in osrm are all maintained float type, only change the data type when write out to .pb files
   }
 
   if (_internal_metadata_.have_unknown_fields()) {

@@ -2343,6 +2343,7 @@ bool Metric::MergePartialFromCodedStream(
         }
         break;
       }
+
       // repeated uint32 durations = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) == (26 & 0xFF)) {
@@ -2431,6 +2432,7 @@ void Metric::SerializeWithCachedSizes(
   // @@protoc_insertion_point(serialize_to_array_start:pbmld.Metric)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
+
   // repeated uint32 weights = 1;
   if (this->weights_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
@@ -2490,6 +2492,7 @@ size_t Metric::ByteSizeLong() const {
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
+
   // repeated uint32 weights = 1;
   {
     size_t data_size = ::google::protobuf::internal::WireFormatLite::
@@ -2504,6 +2507,7 @@ size_t Metric::ByteSizeLong() const {
                                     std::memory_order_relaxed);
     total_size += data_size;
   }
+
   // repeated uint64 distances = 2;
   {
     size_t data_size = ::google::protobuf::internal::WireFormatLite::
@@ -2518,6 +2522,7 @@ size_t Metric::ByteSizeLong() const {
                                     std::memory_order_relaxed);
     total_size += data_size;
   }
+
   // repeated uint32 durations = 3;
   {
     size_t data_size = ::google::protobuf::internal::WireFormatLite::
