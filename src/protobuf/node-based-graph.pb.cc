@@ -128,7 +128,8 @@ const ::google::protobuf::uint32 TableStruct_node_2dbased_2dgraph_2eproto::offse
   PROTOBUF_FIELD_OFFSET(::pbnbg::CompressedNbg, forward_weights_),
   PROTOBUF_FIELD_OFFSET(::pbnbg::CompressedNbg, reverse_weights_),
   PROTOBUF_FIELD_OFFSET(::pbnbg::CompressedNbg, distances_),
-  PROTOBUF_FIELD_OFFSET(::pbnbg::CompressedNbg, durations_),
+  PROTOBUF_FIELD_OFFSET(::pbnbg::CompressedNbg, forward_durations_),
+  PROTOBUF_FIELD_OFFSET(::pbnbg::CompressedNbg, reverse_durations_),
   PROTOBUF_FIELD_OFFSET(::pbnbg::CompressedNbg, roadtype_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::pbnbg::StreetNames, _internal_metadata_),
@@ -142,7 +143,7 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] PROTOBUF_SE
   { 0, -1, sizeof(::pbnbg::Coordinate)},
   { 7, -1, sizeof(::pbnbg::Nodes)},
   { 14, -1, sizeof(::pbnbg::CompressedNbg)},
-  { 26, -1, sizeof(::pbnbg::StreetNames)},
+  { 27, -1, sizeof(::pbnbg::StreetNames)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -162,17 +163,18 @@ const char descriptor_table_protodef_node_2dbased_2dgraph_2eproto[] =
   "\n\026node-based-graph.proto\022\005pbnbg\"&\n\nCoord"
   "inate\022\013\n\003lon\030\001 \001(\005\022\013\n\003lat\030\002 \001(\005\"9\n\005Nodes"
   "\022!\n\006latLon\030\001 \003(\0132\021.pbnbg.Coordinate\022\r\n\005o"
-  "smid\030\002 \003(\004\"\227\001\n\rCompressedNbg\022\r\n\005index\030\001 "
+  "smid\030\002 \003(\004\"\272\001\n\rCompressedNbg\022\r\n\005index\030\001 "
   "\003(\r\022\r\n\005nodes\030\002 \003(\r\022\027\n\017forward_weights\030\003 "
-  "\003(\005\022\027\n\017reverse_weights\030\004 \003(\005\022\021\n\tdistance"
-  "s\030\005 \003(\005\022\021\n\tdurations\030\006 \003(\005\022\020\n\010roadType\030\007"
-  " \003(\005\"9\n\013StreetNames\022\024\n\014names_packed\030\001 \001("
-  "\t\022\024\n\014name_offsets\030\002 \003(\rb\006proto3"
+  "\003(\r\022\027\n\017reverse_weights\030\004 \003(\r\022\021\n\tdistance"
+  "s\030\005 \003(\r\022\031\n\021forward_durations\030\006 \003(\r\022\031\n\021re"
+  "verse_durations\030\007 \003(\r\022\020\n\010roadType\030\010 \003(\r\""
+  "9\n\013StreetNames\022\024\n\014names_packed\030\001 \001(\t\022\024\n\014"
+  "name_offsets\030\002 \003(\rb\006proto3"
   ;
 ::google::protobuf::internal::DescriptorTable descriptor_table_node_2dbased_2dgraph_2eproto = {
   false, InitDefaults_node_2dbased_2dgraph_2eproto, 
   descriptor_table_protodef_node_2dbased_2dgraph_2eproto,
-  "node-based-graph.proto", &assign_descriptors_table_node_2dbased_2dgraph_2eproto, 351,
+  "node-based-graph.proto", &assign_descriptors_table_node_2dbased_2dgraph_2eproto, 386,
 };
 
 void AddDescriptors_node_2dbased_2dgraph_2eproto() {
@@ -868,7 +870,8 @@ const int CompressedNbg::kNodesFieldNumber;
 const int CompressedNbg::kForwardWeightsFieldNumber;
 const int CompressedNbg::kReverseWeightsFieldNumber;
 const int CompressedNbg::kDistancesFieldNumber;
-const int CompressedNbg::kDurationsFieldNumber;
+const int CompressedNbg::kForwardDurationsFieldNumber;
+const int CompressedNbg::kReverseDurationsFieldNumber;
 const int CompressedNbg::kRoadTypeFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -885,7 +888,8 @@ CompressedNbg::CompressedNbg(const CompressedNbg& from)
       forward_weights_(from.forward_weights_),
       reverse_weights_(from.reverse_weights_),
       distances_(from.distances_),
-      durations_(from.durations_),
+      forward_durations_(from.forward_durations_),
+      reverse_durations_(from.reverse_durations_),
       roadtype_(from.roadtype_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:pbnbg.CompressedNbg)
@@ -922,7 +926,8 @@ void CompressedNbg::Clear() {
   forward_weights_.Clear();
   reverse_weights_.Clear();
   distances_.Clear();
-  durations_.Clear();
+  forward_durations_.Clear();
+  reverse_durations_.Clear();
   roadtype_.Clear();
   _internal_metadata_.Clear();
 }
@@ -980,12 +985,12 @@ const char* CompressedNbg::_InternalParse(const char* begin, const char* end, vo
         } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 16 && (ptr += 1));
         break;
       }
-      // repeated int32 forward_weights = 3;
+      // repeated uint32 forward_weights = 3;
       case 3: {
         if (static_cast<::google::protobuf::uint8>(tag) == 26) {
           ptr = ::google::protobuf::io::ReadSize(ptr, &size);
           GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-          parser_till_end = ::google::protobuf::internal::PackedInt32Parser;
+          parser_till_end = ::google::protobuf::internal::PackedUInt32Parser;
           object = msg->mutable_forward_weights();
           if (size > end - ptr) goto len_delim_till_end;
           auto newend = ptr + size;
@@ -1000,12 +1005,12 @@ const char* CompressedNbg::_InternalParse(const char* begin, const char* end, vo
         } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 24 && (ptr += 1));
         break;
       }
-      // repeated int32 reverse_weights = 4;
+      // repeated uint32 reverse_weights = 4;
       case 4: {
         if (static_cast<::google::protobuf::uint8>(tag) == 34) {
           ptr = ::google::protobuf::io::ReadSize(ptr, &size);
           GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-          parser_till_end = ::google::protobuf::internal::PackedInt32Parser;
+          parser_till_end = ::google::protobuf::internal::PackedUInt32Parser;
           object = msg->mutable_reverse_weights();
           if (size > end - ptr) goto len_delim_till_end;
           auto newend = ptr + size;
@@ -1020,12 +1025,12 @@ const char* CompressedNbg::_InternalParse(const char* begin, const char* end, vo
         } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 32 && (ptr += 1));
         break;
       }
-      // repeated int32 distances = 5;
+      // repeated uint32 distances = 5;
       case 5: {
         if (static_cast<::google::protobuf::uint8>(tag) == 42) {
           ptr = ::google::protobuf::io::ReadSize(ptr, &size);
           GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-          parser_till_end = ::google::protobuf::internal::PackedInt32Parser;
+          parser_till_end = ::google::protobuf::internal::PackedUInt32Parser;
           object = msg->mutable_distances();
           if (size > end - ptr) goto len_delim_till_end;
           auto newend = ptr + size;
@@ -1040,13 +1045,13 @@ const char* CompressedNbg::_InternalParse(const char* begin, const char* end, vo
         } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 40 && (ptr += 1));
         break;
       }
-      // repeated int32 durations = 6;
+      // repeated uint32 forward_durations = 6;
       case 6: {
         if (static_cast<::google::protobuf::uint8>(tag) == 50) {
           ptr = ::google::protobuf::io::ReadSize(ptr, &size);
           GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-          parser_till_end = ::google::protobuf::internal::PackedInt32Parser;
-          object = msg->mutable_durations();
+          parser_till_end = ::google::protobuf::internal::PackedUInt32Parser;
+          object = msg->mutable_forward_durations();
           if (size > end - ptr) goto len_delim_till_end;
           auto newend = ptr + size;
           if (size) ptr = parser_till_end(ptr, newend, object, ctx);
@@ -1054,19 +1059,19 @@ const char* CompressedNbg::_InternalParse(const char* begin, const char* end, vo
           break;
         } else if (static_cast<::google::protobuf::uint8>(tag) != 48) goto handle_unusual;
         do {
-          msg->add_durations(::google::protobuf::internal::ReadVarint(&ptr));
+          msg->add_forward_durations(::google::protobuf::internal::ReadVarint(&ptr));
           GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
           if (ptr >= end) break;
         } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 48 && (ptr += 1));
         break;
       }
-      // repeated int32 roadType = 7;
+      // repeated uint32 reverse_durations = 7;
       case 7: {
         if (static_cast<::google::protobuf::uint8>(tag) == 58) {
           ptr = ::google::protobuf::io::ReadSize(ptr, &size);
           GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
-          parser_till_end = ::google::protobuf::internal::PackedInt32Parser;
-          object = msg->mutable_roadtype();
+          parser_till_end = ::google::protobuf::internal::PackedUInt32Parser;
+          object = msg->mutable_reverse_durations();
           if (size > end - ptr) goto len_delim_till_end;
           auto newend = ptr + size;
           if (size) ptr = parser_till_end(ptr, newend, object, ctx);
@@ -1074,10 +1079,30 @@ const char* CompressedNbg::_InternalParse(const char* begin, const char* end, vo
           break;
         } else if (static_cast<::google::protobuf::uint8>(tag) != 56) goto handle_unusual;
         do {
-          msg->add_roadtype(::google::protobuf::internal::ReadVarint(&ptr));
+          msg->add_reverse_durations(::google::protobuf::internal::ReadVarint(&ptr));
           GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
           if (ptr >= end) break;
         } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 56 && (ptr += 1));
+        break;
+      }
+      // repeated uint32 roadType = 8;
+      case 8: {
+        if (static_cast<::google::protobuf::uint8>(tag) == 66) {
+          ptr = ::google::protobuf::io::ReadSize(ptr, &size);
+          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+          parser_till_end = ::google::protobuf::internal::PackedUInt32Parser;
+          object = msg->mutable_roadtype();
+          if (size > end - ptr) goto len_delim_till_end;
+          auto newend = ptr + size;
+          if (size) ptr = parser_till_end(ptr, newend, object, ctx);
+          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr == newend);
+          break;
+        } else if (static_cast<::google::protobuf::uint8>(tag) != 64) goto handle_unusual;
+        do {
+          msg->add_roadtype(::google::protobuf::internal::ReadVarint(&ptr));
+          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+          if (ptr >= end) break;
+        } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 64 && (ptr += 1));
         break;
       }
       default: {
@@ -1142,15 +1167,15 @@ bool CompressedNbg::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated int32 forward_weights = 3;
+      // repeated uint32 forward_weights = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) == (26 & 0xFF)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, this->mutable_forward_weights())));
         } else if (static_cast< ::google::protobuf::uint8>(tag) == (24 & 0xFF)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  1, 26u, input, this->mutable_forward_weights())));
         } else {
           goto handle_unusual;
@@ -1158,15 +1183,15 @@ bool CompressedNbg::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated int32 reverse_weights = 4;
+      // repeated uint32 reverse_weights = 4;
       case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) == (34 & 0xFF)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, this->mutable_reverse_weights())));
         } else if (static_cast< ::google::protobuf::uint8>(tag) == (32 & 0xFF)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  1, 34u, input, this->mutable_reverse_weights())));
         } else {
           goto handle_unusual;
@@ -1174,15 +1199,15 @@ bool CompressedNbg::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated int32 distances = 5;
+      // repeated uint32 distances = 5;
       case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) == (42 & 0xFF)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, this->mutable_distances())));
         } else if (static_cast< ::google::protobuf::uint8>(tag) == (40 & 0xFF)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  1, 42u, input, this->mutable_distances())));
         } else {
           goto handle_unusual;
@@ -1190,32 +1215,48 @@ bool CompressedNbg::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated int32 durations = 6;
+      // repeated uint32 forward_durations = 6;
       case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) == (50 & 0xFF)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, this->mutable_durations())));
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, this->mutable_forward_durations())));
         } else if (static_cast< ::google::protobuf::uint8>(tag) == (48 & 0xFF)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 50u, input, this->mutable_durations())));
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 1, 50u, input, this->mutable_forward_durations())));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // repeated int32 roadType = 7;
+      // repeated uint32 reverse_durations = 7;
       case 7: {
         if (static_cast< ::google::protobuf::uint8>(tag) == (58 & 0xFF)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, this->mutable_roadtype())));
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, this->mutable_reverse_durations())));
         } else if (static_cast< ::google::protobuf::uint8>(tag) == (56 & 0xFF)) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 1, 58u, input, this->mutable_roadtype())));
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 1, 58u, input, this->mutable_reverse_durations())));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated uint32 roadType = 8;
+      case 8: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (66 & 0xFF)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, this->mutable_roadtype())));
+        } else if (static_cast< ::google::protobuf::uint8>(tag) == (64 & 0xFF)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 1, 66u, input, this->mutable_roadtype())));
         } else {
           goto handle_unusual;
         }
@@ -1271,58 +1312,69 @@ void CompressedNbg::SerializeWithCachedSizes(
       this->nodes(i), output);
   }
 
-  // repeated int32 forward_weights = 3;
+  // repeated uint32 forward_weights = 3;
   if (this->forward_weights_size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteTag(3, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
     output->WriteVarint32(_forward_weights_cached_byte_size_.load(
         std::memory_order_relaxed));
   }
   for (int i = 0, n = this->forward_weights_size(); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32NoTag(
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32NoTag(
       this->forward_weights(i), output);
   }
 
-  // repeated int32 reverse_weights = 4;
+  // repeated uint32 reverse_weights = 4;
   if (this->reverse_weights_size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteTag(4, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
     output->WriteVarint32(_reverse_weights_cached_byte_size_.load(
         std::memory_order_relaxed));
   }
   for (int i = 0, n = this->reverse_weights_size(); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32NoTag(
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32NoTag(
       this->reverse_weights(i), output);
   }
 
-  // repeated int32 distances = 5;
+  // repeated uint32 distances = 5;
   if (this->distances_size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteTag(5, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
     output->WriteVarint32(_distances_cached_byte_size_.load(
         std::memory_order_relaxed));
   }
   for (int i = 0, n = this->distances_size(); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32NoTag(
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32NoTag(
       this->distances(i), output);
   }
 
-  // repeated int32 durations = 6;
-  if (this->durations_size() > 0) {
+  // repeated uint32 forward_durations = 6;
+  if (this->forward_durations_size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteTag(6, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
-    output->WriteVarint32(_durations_cached_byte_size_.load(
+    output->WriteVarint32(_forward_durations_cached_byte_size_.load(
         std::memory_order_relaxed));
   }
-  for (int i = 0, n = this->durations_size(); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32NoTag(
-      this->durations(i), output);
+  for (int i = 0, n = this->forward_durations_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32NoTag(
+      this->forward_durations(i), output);
   }
 
-  // repeated int32 roadType = 7;
-  if (this->roadtype_size() > 0) {
+  // repeated uint32 reverse_durations = 7;
+  if (this->reverse_durations_size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteTag(7, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(_reverse_durations_cached_byte_size_.load(
+        std::memory_order_relaxed));
+  }
+  for (int i = 0, n = this->reverse_durations_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32NoTag(
+      this->reverse_durations(i), output);
+  }
+
+  // repeated uint32 roadType = 8;
+  if (this->roadtype_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(8, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
     output->WriteVarint32(_roadtype_cached_byte_size_.load(
         std::memory_order_relaxed));
   }
   for (int i = 0, n = this->roadtype_size(); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32NoTag(
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32NoTag(
       this->roadtype(i), output);
   }
 
@@ -1365,7 +1417,7 @@ void CompressedNbg::SerializeWithCachedSizes(
       WriteUInt32NoTagToArray(this->nodes_, target);
   }
 
-  // repeated int32 forward_weights = 3;
+  // repeated uint32 forward_weights = 3;
   if (this->forward_weights_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
       3,
@@ -1375,10 +1427,10 @@ void CompressedNbg::SerializeWithCachedSizes(
         _forward_weights_cached_byte_size_.load(std::memory_order_relaxed),
          target);
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteInt32NoTagToArray(this->forward_weights_, target);
+      WriteUInt32NoTagToArray(this->forward_weights_, target);
   }
 
-  // repeated int32 reverse_weights = 4;
+  // repeated uint32 reverse_weights = 4;
   if (this->reverse_weights_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
       4,
@@ -1388,10 +1440,10 @@ void CompressedNbg::SerializeWithCachedSizes(
         _reverse_weights_cached_byte_size_.load(std::memory_order_relaxed),
          target);
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteInt32NoTagToArray(this->reverse_weights_, target);
+      WriteUInt32NoTagToArray(this->reverse_weights_, target);
   }
 
-  // repeated int32 distances = 5;
+  // repeated uint32 distances = 5;
   if (this->distances_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
       5,
@@ -1401,33 +1453,46 @@ void CompressedNbg::SerializeWithCachedSizes(
         _distances_cached_byte_size_.load(std::memory_order_relaxed),
          target);
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteInt32NoTagToArray(this->distances_, target);
+      WriteUInt32NoTagToArray(this->distances_, target);
   }
 
-  // repeated int32 durations = 6;
-  if (this->durations_size() > 0) {
+  // repeated uint32 forward_durations = 6;
+  if (this->forward_durations_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
       6,
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       target);
     target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
-        _durations_cached_byte_size_.load(std::memory_order_relaxed),
+        _forward_durations_cached_byte_size_.load(std::memory_order_relaxed),
          target);
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteInt32NoTagToArray(this->durations_, target);
+      WriteUInt32NoTagToArray(this->forward_durations_, target);
   }
 
-  // repeated int32 roadType = 7;
-  if (this->roadtype_size() > 0) {
+  // repeated uint32 reverse_durations = 7;
+  if (this->reverse_durations_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
       7,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+        _reverse_durations_cached_byte_size_.load(std::memory_order_relaxed),
+         target);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteUInt32NoTagToArray(this->reverse_durations_, target);
+  }
+
+  // repeated uint32 roadType = 8;
+  if (this->roadtype_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      8,
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       target);
     target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
         _roadtype_cached_byte_size_.load(std::memory_order_relaxed),
          target);
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteInt32NoTagToArray(this->roadtype_, target);
+      WriteUInt32NoTagToArray(this->roadtype_, target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -1481,10 +1546,10 @@ size_t CompressedNbg::ByteSizeLong() const {
     total_size += data_size;
   }
 
-  // repeated int32 forward_weights = 3;
+  // repeated uint32 forward_weights = 3;
   {
     size_t data_size = ::google::protobuf::internal::WireFormatLite::
-      Int32Size(this->forward_weights_);
+      UInt32Size(this->forward_weights_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -1496,10 +1561,10 @@ size_t CompressedNbg::ByteSizeLong() const {
     total_size += data_size;
   }
 
-  // repeated int32 reverse_weights = 4;
+  // repeated uint32 reverse_weights = 4;
   {
     size_t data_size = ::google::protobuf::internal::WireFormatLite::
-      Int32Size(this->reverse_weights_);
+      UInt32Size(this->reverse_weights_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -1511,10 +1576,10 @@ size_t CompressedNbg::ByteSizeLong() const {
     total_size += data_size;
   }
 
-  // repeated int32 distances = 5;
+  // repeated uint32 distances = 5;
   {
     size_t data_size = ::google::protobuf::internal::WireFormatLite::
-      Int32Size(this->distances_);
+      UInt32Size(this->distances_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -1526,25 +1591,40 @@ size_t CompressedNbg::ByteSizeLong() const {
     total_size += data_size;
   }
 
-  // repeated int32 durations = 6;
+  // repeated uint32 forward_durations = 6;
   {
     size_t data_size = ::google::protobuf::internal::WireFormatLite::
-      Int32Size(this->durations_);
+      UInt32Size(this->forward_durations_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
             static_cast<::google::protobuf::int32>(data_size));
     }
     int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
-    _durations_cached_byte_size_.store(cached_size,
+    _forward_durations_cached_byte_size_.store(cached_size,
                                     std::memory_order_relaxed);
     total_size += data_size;
   }
 
-  // repeated int32 roadType = 7;
+  // repeated uint32 reverse_durations = 7;
   {
     size_t data_size = ::google::protobuf::internal::WireFormatLite::
-      Int32Size(this->roadtype_);
+      UInt32Size(this->reverse_durations_);
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+            static_cast<::google::protobuf::int32>(data_size));
+    }
+    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
+    _reverse_durations_cached_byte_size_.store(cached_size,
+                                    std::memory_order_relaxed);
+    total_size += data_size;
+  }
+
+  // repeated uint32 roadType = 8;
+  {
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      UInt32Size(this->roadtype_);
     if (data_size > 0) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -1588,7 +1668,8 @@ void CompressedNbg::MergeFrom(const CompressedNbg& from) {
   forward_weights_.MergeFrom(from.forward_weights_);
   reverse_weights_.MergeFrom(from.reverse_weights_);
   distances_.MergeFrom(from.distances_);
-  durations_.MergeFrom(from.durations_);
+  forward_durations_.MergeFrom(from.forward_durations_);
+  reverse_durations_.MergeFrom(from.reverse_durations_);
   roadtype_.MergeFrom(from.roadtype_);
 }
 
@@ -1622,7 +1703,8 @@ void CompressedNbg::InternalSwap(CompressedNbg* other) {
   forward_weights_.InternalSwap(&other->forward_weights_);
   reverse_weights_.InternalSwap(&other->reverse_weights_);
   distances_.InternalSwap(&other->distances_);
-  durations_.InternalSwap(&other->durations_);
+  forward_durations_.InternalSwap(&other->forward_durations_);
+  reverse_durations_.InternalSwap(&other->reverse_durations_);
   roadtype_.InternalSwap(&other->roadtype_);
 }
 

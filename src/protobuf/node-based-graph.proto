@@ -16,11 +16,12 @@ message Nodes{
 message CompressedNbg{
     repeated uint32 index = 1;
     repeated uint32 nodes = 2;
-    repeated int32 forward_weights = 3;
-    repeated int32 reverse_weights = 4;
-    repeated int32 distances = 5;
-    repeated int32 durations = 6;
-    repeated int32 roadType = 7;
+    repeated uint32 forward_weights = 3;
+    repeated uint32 reverse_weights = 4;
+    repeated uint32 distances = 5;
+    repeated uint32 forward_durations = 6;
+    repeated uint32 reverse_durations = 7;
+    repeated uint32 roadType = 8;
 }
 
 message StreetNames {

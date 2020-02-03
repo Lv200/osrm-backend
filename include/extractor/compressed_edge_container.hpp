@@ -2,6 +2,7 @@
 #define GEOMETRY_COMPRESSOR_HPP_
 
 #include "extractor/segment_data_container.hpp"
+#include "road_classification.hpp"
 
 #include "util/typedefs.hpp"
 
@@ -24,6 +25,8 @@ class CompressedEdgeContainer
         NodeID node_id;           // refers to an internal node-based-node
         SegmentWeight weight;     // the weight of the edge leading to this node
         SegmentDuration duration; // the duration of the edge leading to this node
+        SegmentDistance distance; // the distance of the edge leading to this node
+        RoadPriorityClass::Enum road_class; // the road class of the edge
     };
 
     using OnewayEdgeBucket = std::vector<OnewayCompressedEdge>;
@@ -37,6 +40,10 @@ class CompressedEdgeContainer
                       const EdgeWeight weight2,
                       const EdgeDuration duration1,
                       const EdgeDuration duration2,
+                      const EdgeDistance distance1,
+                      const EdgeDistance distance2,
+                      const RoadPriorityClass::Enum road_class_1,
+                      const RoadPriorityClass::Enum road_class_2,
                       // node-penalties can be added before/or after the traversal of an edge which
                       // depends on whether we traverse the link forwards or backwards.
                       const EdgeWeight node_weight_penalty = INVALID_EDGE_WEIGHT,
@@ -45,7 +52,9 @@ class CompressedEdgeContainer
     void AddUncompressedEdge(const EdgeID edge_id,
                              const NodeID target_node,
                              const SegmentWeight weight,
-                             const SegmentWeight duration);
+                             const SegmentWeight duration,
+                             const SegmentDistance distance,
+                             const RoadPriorityClass::Enum road_class);
 
     void InitializeBothwayVector();
     unsigned ZipEdges(const unsigned f_edge_pos, const unsigned r_edge_pos);
@@ -69,10 +78,12 @@ class CompressedEdgeContainer
   private:
     SegmentWeight ClipWeight(const SegmentWeight weight);
     SegmentDuration ClipDuration(const SegmentDuration duration);
+    SegmentDistance ExpandDistance(const EdgeDistance distance_);
 
     int free_list_maximum = 0;
     std::atomic_size_t clipped_weights{0};
     std::atomic_size_t clipped_durations{0};
+    std::atomic_size_t clipped_distances{0};
 
     void IncreaseFreeList();
     std::vector<OnewayEdgeBucket> m_compressed_oneway_geometries;

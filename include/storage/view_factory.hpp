@@ -18,6 +18,7 @@
 #include "extractor/packed_osm_ids.hpp"
 #include "extractor/query_node.hpp"
 #include "extractor/travel_mode.hpp"
+#include "extractor/road_classification.hpp"
 
 #include "guidance/turn_bearing.hpp"
 #include "guidance/turn_data_container.hpp"
@@ -154,6 +155,14 @@ inline auto make_segment_data_view(const SharedDataIndex &index, const std::stri
             index, name + "/reverse_durations/packed"),
         num_entries);
 
+    extractor::SegmentDataView::SegmentDistanceVector distance_list(
+        make_vector_view<extractor::SegmentDataView::SegmentDistanceVector::block_type>(
+            index, name + "/distances/packed"),
+        num_entries);
+    
+    extractor::SegmentDataView::SegmentRoadClassVector road_class_list(
+        make_vector_view<extractor::RoadPriorityClass::Enum>(index, name + "/road_classes/packed"));
+
     auto fwd_datasources_list =
         make_vector_view<DatasourceID>(index, name + "/forward_data_sources");
 
@@ -166,6 +175,8 @@ inline auto make_segment_data_view(const SharedDataIndex &index, const std::stri
                                       std::move(rev_weight_list),
                                       std::move(fwd_duration_list),
                                       std::move(rev_duration_list),
+                                      std::move(distance_list),
+                                      std::move(road_class_list),
                                       std::move(fwd_datasources_list),
                                       std::move(rev_datasources_list)};
 }
