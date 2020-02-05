@@ -171,7 +171,7 @@ int Customizer::Run(const CustomizationConfig &config)
 
     if(config.updater_config.IsOverride()){
         TIMER_START(writing_enw);
-        customizer::files::writeEdgeBasedNodeWeightsDurations(config.GetPath(".osrm.enw"), node_weights, node_durations);
+        extractor::files::writeEdgeBasedNodeWeightsDurationsDistances(config.GetPath(".osrm.enw"), node_weights, node_durations, node_distances);
         TIMER_STOP(writing_enw);
         util::Log() << "enw writing took " << TIMER_SEC(writing_enw) << " seconds";
     }
