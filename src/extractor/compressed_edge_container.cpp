@@ -95,9 +95,8 @@ SegmentDuration CompressedEdgeContainer::ClipDuration(const SegmentDuration dura
     return duration;
 }
 
-SegmentDistance CompressedEdgeContainer::ExpandDistance(const EdgeDistance distance_)
+SegmentDistance CompressedEdgeContainer::ClipDistance(const EdgeDistance distance)
 {
-    SegmentDistance distance = round(distance_ * DISTANCE_FACTOR);
     if (distance >= INVALID_SEGMENT_DISTANCE)
     {
         clipped_distances++;
@@ -176,7 +175,7 @@ void CompressedEdgeContainer::CompressEdge(const EdgeID edge_id_1,
     if (was_empty)
     {
         edge_bucket_list1.emplace_back(
-            OnewayCompressedEdge{via_node_id, ClipWeight(weight1), ClipDuration(duration1), ExpandDistance(distance1), road_class_1});
+            OnewayCompressedEdge{via_node_id, ClipWeight(weight1), ClipDuration(duration1), ClipDistance(distance1), road_class_1});
     }
 
     BOOST_ASSERT(0 < edge_bucket_list1.size());
@@ -190,7 +189,7 @@ void CompressedEdgeContainer::CompressEdge(const EdgeID edge_id_1,
         node_duration_penalty != MAXIMAL_EDGE_DURATION)
     {
         edge_bucket_list1.emplace_back(OnewayCompressedEdge{
-            via_node_id, ClipWeight(node_weight_penalty), ClipDuration(node_duration_penalty), ExpandDistance(0.0), road_class_1});
+            via_node_id, ClipWeight(node_weight_penalty), ClipDuration(node_duration_penalty), ClipDistance(0.0), road_class_1});
     }
 
     if (HasEntryForID(edge_id_2))
@@ -219,7 +218,7 @@ void CompressedEdgeContainer::CompressEdge(const EdgeID edge_id_1,
     {
         // we are certain that the second edge is atomic.
         edge_bucket_list1.emplace_back(
-            OnewayCompressedEdge{target_node_id, ClipWeight(weight2), ClipDuration(duration2), ExpandDistance(distance2), road_class_2});
+            OnewayCompressedEdge{target_node_id, ClipWeight(weight2), ClipDuration(duration2), ClipDistance(distance2), road_class_2});
     }
 }
 
@@ -265,7 +264,7 @@ void CompressedEdgeContainer::AddUncompressedEdge(const EdgeID edge_id,
     if (edge_bucket_list.empty())
     {
         edge_bucket_list.emplace_back(
-            OnewayCompressedEdge{target_node_id, ClipWeight(weight), ClipDuration(duration), ExpandDistance(distance), road_class});
+            OnewayCompressedEdge{target_node_id, ClipWeight(weight), ClipDuration(duration), ClipDistance(distance), road_class});
     }
 }
 

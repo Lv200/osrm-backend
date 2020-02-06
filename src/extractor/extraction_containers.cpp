@@ -407,8 +407,8 @@ void ExtractionContainers::PrepareEdges(ScriptingEnvironment &scripting_environm
 
             auto &edge = edge_iterator->result;
             edge.weight = std::max<EdgeWeight>(1, std::round(segment.weight * weight_multiplier));
-            edge.duration = std::max<EdgeWeight>(1, std::round(segment.duration * 10.));
-            edge.distance = accurate_distance;
+            edge.duration = std::max<EdgeDuration>(1, std::round(segment.duration * 10.));
+            edge.distance = std::max<EdgeDistance>(1, std::round(accurate_distance * 1000.));
 
             // assign new node id
             const auto node_id = mapExternalToInternalNodeID(
