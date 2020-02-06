@@ -110,7 +110,6 @@ static const unsigned INVALID_COMPONENTID = 0;
 static const std::size_t SEGMENT_WEIGHT_BITS = 22;
 static const std::size_t SEGMENT_DURATION_BITS = 22;
 static const std::size_t SEGMENT_DISTANCE_BITS = 27;
-static const std::size_t DISTANCE_FACTOR = 1000;
 static const SegmentWeight INVALID_SEGMENT_WEIGHT = (1u << SEGMENT_WEIGHT_BITS) - 1;
 static const SegmentDuration INVALID_SEGMENT_DURATION = (1u << SEGMENT_DURATION_BITS) - 1;
 static const SegmentDistance INVALID_SEGMENT_DISTANCE = (1u << SEGMENT_DISTANCE_BITS) - 1;

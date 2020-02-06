@@ -78,7 +78,7 @@ class CompressedEdgeContainer
   private:
     SegmentWeight ClipWeight(const SegmentWeight weight);
     SegmentDuration ClipDuration(const SegmentDuration duration);
-    SegmentDistance ExpandDistance(const EdgeDistance distance_);
+    SegmentDistance ClipDistance(const EdgeDistance distance);
 
     int free_list_maximum = 0;
     std::atomic_size_t clipped_weights{0};
