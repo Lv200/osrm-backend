@@ -308,7 +308,7 @@ unsigned CompressedEdgeContainer::ZipEdges(const EdgeID f_edge_id, const EdgeID 
     segment_data->rev_weights.emplace_back(first_node.weight);
     segment_data->fwd_durations.emplace_back(INVALID_SEGMENT_DURATION);
     segment_data->rev_durations.emplace_back(first_node.duration);
-    segment_data->distances.emplace_back(first_node.distance);
+    segment_data->distances.emplace_back(INVALID_SEGMENT_DISTANCE);
     segment_data->road_classes.emplace_back(first_node.road_class);
     segment_data->fwd_datasources.emplace_back(LUA_SOURCE);
     segment_data->rev_datasources.emplace_back(LUA_SOURCE);
@@ -325,7 +325,7 @@ unsigned CompressedEdgeContainer::ZipEdges(const EdgeID f_edge_id, const EdgeID 
         segment_data->rev_weights.emplace_back(rev_node.weight);
         segment_data->fwd_durations.emplace_back(fwd_node.duration);
         segment_data->rev_durations.emplace_back(rev_node.duration);
-        segment_data->distances.emplace_back(std::min(fwd_node.distance, rev_node.distance));
+        segment_data->distances.emplace_back(fwd_node.distance);
         segment_data->road_classes.emplace_back(fwd_node.road_class);
         segment_data->fwd_datasources.emplace_back(LUA_SOURCE);
         segment_data->rev_datasources.emplace_back(LUA_SOURCE);
