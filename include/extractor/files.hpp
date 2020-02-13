@@ -146,7 +146,9 @@ inline void readNodeCoordinates(const boost::filesystem::path &path, Coordinates
 template <typename CoordinatesT, typename PackedOSMIDsT>
 inline void writeNodes(const boost::filesystem::path &path,
                        const CoordinatesT &coordinates,
-                       const PackedOSMIDsT &osm_node_ids)
+                       const PackedOSMIDsT &osm_node_ids,
+                       const std::unordered_set<NodeID> &barrier_nodes,
+                       const std::unordered_set<NodeID> &traffic_signals)
 {
     static_assert(std::is_same<typename CoordinatesT::value_type, util::Coordinate>::value, "");
     static_assert(std::is_same<typename PackedOSMIDsT::value_type, OSMNodeID>::value, "");
@@ -168,7 +170,16 @@ inline void writeNodes(const boost::filesystem::path &path,
 
     for (unsigned long  i = 0; i < osm_node_ids.size(); ++i){
         pb_nodes.add_osmid(uint64_t(osm_node_ids[i]));
+
+        const bool is_barrier = barrier_nodes.end() != barrier_nodes.find(NodeID(i));
+        const bool is_traffic_signal = traffic_signals.end() != traffic_signals.find(NodeID(i));
+        pb_nodes.add_barrier(is_barrier);
+        pb_nodes.add_traffic_signal(is_traffic_signal);
     }
+    std::cout << "number of osm_node/barrier/traffic_signal : "
+              << osm_node_ids.size() << "," 
+              << barrier_nodes.size() <<","
+              << traffic_signals.size() << std::endl;
 
     std::fstream pb_out("1.nbg.nodes.pb", std::ios::out | std::ios::binary);
     pb_nodes.SerializeToOstream(&pb_out);

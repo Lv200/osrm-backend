@@ -312,6 +312,30 @@ class Nodes :
   ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >*
       mutable_osmid();
 
+  // repeated bool barrier = 3;
+  int barrier_size() const;
+  void clear_barrier();
+  static const int kBarrierFieldNumber = 3;
+  bool barrier(int index) const;
+  void set_barrier(int index, bool value);
+  void add_barrier(bool value);
+  const ::google::protobuf::RepeatedField< bool >&
+      barrier() const;
+  ::google::protobuf::RepeatedField< bool >*
+      mutable_barrier();
+
+  // repeated bool traffic_signal = 4;
+  int traffic_signal_size() const;
+  void clear_traffic_signal();
+  static const int kTrafficSignalFieldNumber = 4;
+  bool traffic_signal(int index) const;
+  void set_traffic_signal(int index, bool value);
+  void add_traffic_signal(bool value);
+  const ::google::protobuf::RepeatedField< bool >&
+      traffic_signal() const;
+  ::google::protobuf::RepeatedField< bool >*
+      mutable_traffic_signal();
+
   // @@protoc_insertion_point(class_scope:pbnbg.Nodes)
  private:
   class HasBitSetters;
@@ -320,6 +344,10 @@ class Nodes :
   ::google::protobuf::RepeatedPtrField< ::pbnbg::Coordinate > latlon_;
   ::google::protobuf::RepeatedField< ::google::protobuf::uint64 > osmid_;
   mutable std::atomic<int> _osmid_cached_byte_size_;
+  ::google::protobuf::RepeatedField< bool > barrier_;
+  mutable std::atomic<int> _barrier_cached_byte_size_;
+  ::google::protobuf::RepeatedField< bool > traffic_signal_;
+  mutable std::atomic<int> _traffic_signal_cached_byte_size_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_node_2dbased_2dgraph_2eproto;
 };
@@ -775,6 +803,66 @@ inline ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >*
 Nodes::mutable_osmid() {
   // @@protoc_insertion_point(field_mutable_list:pbnbg.Nodes.osmid)
   return &osmid_;
+}
+
+// repeated bool barrier = 3;
+inline int Nodes::barrier_size() const {
+  return barrier_.size();
+}
+inline void Nodes::clear_barrier() {
+  barrier_.Clear();
+}
+inline bool Nodes::barrier(int index) const {
+  // @@protoc_insertion_point(field_get:pbnbg.Nodes.barrier)
+  return barrier_.Get(index);
+}
+inline void Nodes::set_barrier(int index, bool value) {
+  barrier_.Set(index, value);
+  // @@protoc_insertion_point(field_set:pbnbg.Nodes.barrier)
+}
+inline void Nodes::add_barrier(bool value) {
+  barrier_.Add(value);
+  // @@protoc_insertion_point(field_add:pbnbg.Nodes.barrier)
+}
+inline const ::google::protobuf::RepeatedField< bool >&
+Nodes::barrier() const {
+  // @@protoc_insertion_point(field_list:pbnbg.Nodes.barrier)
+  return barrier_;
+}
+inline ::google::protobuf::RepeatedField< bool >*
+Nodes::mutable_barrier() {
+  // @@protoc_insertion_point(field_mutable_list:pbnbg.Nodes.barrier)
+  return &barrier_;
+}
+
+// repeated bool traffic_signal = 4;
+inline int Nodes::traffic_signal_size() const {
+  return traffic_signal_.size();
+}
+inline void Nodes::clear_traffic_signal() {
+  traffic_signal_.Clear();
+}
+inline bool Nodes::traffic_signal(int index) const {
+  // @@protoc_insertion_point(field_get:pbnbg.Nodes.traffic_signal)
+  return traffic_signal_.Get(index);
+}
+inline void Nodes::set_traffic_signal(int index, bool value) {
+  traffic_signal_.Set(index, value);
+  // @@protoc_insertion_point(field_set:pbnbg.Nodes.traffic_signal)
+}
+inline void Nodes::add_traffic_signal(bool value) {
+  traffic_signal_.Add(value);
+  // @@protoc_insertion_point(field_add:pbnbg.Nodes.traffic_signal)
+}
+inline const ::google::protobuf::RepeatedField< bool >&
+Nodes::traffic_signal() const {
+  // @@protoc_insertion_point(field_list:pbnbg.Nodes.traffic_signal)
+  return traffic_signal_;
+}
+inline ::google::protobuf::RepeatedField< bool >*
+Nodes::mutable_traffic_signal() {
+  // @@protoc_insertion_point(field_mutable_list:pbnbg.Nodes.traffic_signal)
+  return &traffic_signal_;
 }
 
 // -------------------------------------------------------------------

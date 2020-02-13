@@ -10,6 +10,8 @@ message Coordinate{
 message Nodes{
     repeated Coordinate latLon = 1;
     repeated uint64 osmid = 2;
+    repeated bool barrier = 3;
+    repeated bool traffic_signal = 4;
 }
 
 
