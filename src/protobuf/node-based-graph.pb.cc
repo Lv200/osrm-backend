@@ -118,6 +118,8 @@ const ::google::protobuf::uint32 TableStruct_node_2dbased_2dgraph_2eproto::offse
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::pbnbg::Nodes, latlon_),
   PROTOBUF_FIELD_OFFSET(::pbnbg::Nodes, osmid_),
+  PROTOBUF_FIELD_OFFSET(::pbnbg::Nodes, barrier_),
+  PROTOBUF_FIELD_OFFSET(::pbnbg::Nodes, traffic_signal_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::pbnbg::CompressedNbg, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -142,8 +144,8 @@ const ::google::protobuf::uint32 TableStruct_node_2dbased_2dgraph_2eproto::offse
 static const ::google::protobuf::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::pbnbg::Coordinate)},
   { 7, -1, sizeof(::pbnbg::Nodes)},
-  { 14, -1, sizeof(::pbnbg::CompressedNbg)},
-  { 27, -1, sizeof(::pbnbg::StreetNames)},
+  { 16, -1, sizeof(::pbnbg::CompressedNbg)},
+  { 29, -1, sizeof(::pbnbg::StreetNames)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -161,20 +163,21 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
 
 const char descriptor_table_protodef_node_2dbased_2dgraph_2eproto[] =
   "\n\026node-based-graph.proto\022\005pbnbg\"&\n\nCoord"
-  "inate\022\013\n\003lon\030\001 \001(\005\022\013\n\003lat\030\002 \001(\005\"9\n\005Nodes"
+  "inate\022\013\n\003lon\030\001 \001(\005\022\013\n\003lat\030\002 \001(\005\"b\n\005Nodes"
   "\022!\n\006latLon\030\001 \003(\0132\021.pbnbg.Coordinate\022\r\n\005o"
-  "smid\030\002 \003(\004\"\272\001\n\rCompressedNbg\022\r\n\005index\030\001 "
-  "\003(\r\022\r\n\005nodes\030\002 \003(\r\022\027\n\017forward_weights\030\003 "
-  "\003(\r\022\027\n\017reverse_weights\030\004 \003(\r\022\021\n\tdistance"
-  "s\030\005 \003(\r\022\031\n\021forward_durations\030\006 \003(\r\022\031\n\021re"
-  "verse_durations\030\007 \003(\r\022\020\n\010roadType\030\010 \003(\r\""
-  "9\n\013StreetNames\022\024\n\014names_packed\030\001 \001(\t\022\024\n\014"
-  "name_offsets\030\002 \003(\rb\006proto3"
+  "smid\030\002 \003(\004\022\017\n\007barrier\030\003 \003(\010\022\026\n\016traffic_s"
+  "ignal\030\004 \003(\010\"\272\001\n\rCompressedNbg\022\r\n\005index\030\001"
+  " \003(\r\022\r\n\005nodes\030\002 \003(\r\022\027\n\017forward_weights\030\003"
+  " \003(\r\022\027\n\017reverse_weights\030\004 \003(\r\022\021\n\tdistanc"
+  "es\030\005 \003(\r\022\031\n\021forward_durations\030\006 \003(\r\022\031\n\021r"
+  "everse_durations\030\007 \003(\r\022\020\n\010roadType\030\010 \003(\r"
+  "\"9\n\013StreetNames\022\024\n\014names_packed\030\001 \001(\t\022\024\n"
+  "\014name_offsets\030\002 \003(\rb\006proto3"
   ;
 ::google::protobuf::internal::DescriptorTable descriptor_table_node_2dbased_2dgraph_2eproto = {
   false, InitDefaults_node_2dbased_2dgraph_2eproto, 
   descriptor_table_protodef_node_2dbased_2dgraph_2eproto,
-  "node-based-graph.proto", &assign_descriptors_table_node_2dbased_2dgraph_2eproto, 386,
+  "node-based-graph.proto", &assign_descriptors_table_node_2dbased_2dgraph_2eproto, 427,
 };
 
 void AddDescriptors_node_2dbased_2dgraph_2eproto() {
@@ -507,6 +510,8 @@ class Nodes::HasBitSetters {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int Nodes::kLatLonFieldNumber;
 const int Nodes::kOsmidFieldNumber;
+const int Nodes::kBarrierFieldNumber;
+const int Nodes::kTrafficSignalFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Nodes::Nodes()
@@ -518,7 +523,9 @@ Nodes::Nodes(const Nodes& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(nullptr),
       latlon_(from.latlon_),
-      osmid_(from.osmid_) {
+      osmid_(from.osmid_),
+      barrier_(from.barrier_),
+      traffic_signal_(from.traffic_signal_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:pbnbg.Nodes)
 }
@@ -553,6 +560,8 @@ void Nodes::Clear() {
 
   latlon_.Clear();
   osmid_.Clear();
+  barrier_.Clear();
+  traffic_signal_.Clear();
   _internal_metadata_.Clear();
 }
 
@@ -603,6 +612,46 @@ const char* Nodes::_InternalParse(const char* begin, const char* end, void* obje
           GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
           if (ptr >= end) break;
         } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 16 && (ptr += 1));
+        break;
+      }
+      // repeated bool barrier = 3;
+      case 3: {
+        if (static_cast<::google::protobuf::uint8>(tag) == 26) {
+          ptr = ::google::protobuf::io::ReadSize(ptr, &size);
+          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+          parser_till_end = ::google::protobuf::internal::PackedBoolParser;
+          object = msg->mutable_barrier();
+          if (size > end - ptr) goto len_delim_till_end;
+          auto newend = ptr + size;
+          if (size) ptr = parser_till_end(ptr, newend, object, ctx);
+          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr == newend);
+          break;
+        } else if (static_cast<::google::protobuf::uint8>(tag) != 24) goto handle_unusual;
+        do {
+          msg->add_barrier(::google::protobuf::internal::ReadVarint(&ptr));
+          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+          if (ptr >= end) break;
+        } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 24 && (ptr += 1));
+        break;
+      }
+      // repeated bool traffic_signal = 4;
+      case 4: {
+        if (static_cast<::google::protobuf::uint8>(tag) == 34) {
+          ptr = ::google::protobuf::io::ReadSize(ptr, &size);
+          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+          parser_till_end = ::google::protobuf::internal::PackedBoolParser;
+          object = msg->mutable_traffic_signal();
+          if (size > end - ptr) goto len_delim_till_end;
+          auto newend = ptr + size;
+          if (size) ptr = parser_till_end(ptr, newend, object, ctx);
+          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr == newend);
+          break;
+        } else if (static_cast<::google::protobuf::uint8>(tag) != 32) goto handle_unusual;
+        do {
+          msg->add_traffic_signal(::google::protobuf::internal::ReadVarint(&ptr));
+          GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+          if (ptr >= end) break;
+        } while ((::google::protobuf::io::UnalignedLoad<::google::protobuf::uint64>(ptr) & 255) == 32 && (ptr += 1));
         break;
       }
       default: {
@@ -662,6 +711,38 @@ bool Nodes::MergePartialFromCodedStream(
         break;
       }
 
+      // repeated bool barrier = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (26 & 0xFF)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, this->mutable_barrier())));
+        } else if (static_cast< ::google::protobuf::uint8>(tag) == (24 & 0xFF)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 1, 26u, input, this->mutable_barrier())));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated bool traffic_signal = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (34 & 0xFF)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, this->mutable_traffic_signal())));
+        } else if (static_cast< ::google::protobuf::uint8>(tag) == (32 & 0xFF)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 1, 34u, input, this->mutable_traffic_signal())));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -709,6 +790,24 @@ void Nodes::SerializeWithCachedSizes(
       this->osmid(i), output);
   }
 
+  // repeated bool barrier = 3;
+  if (this->barrier_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(3, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(_barrier_cached_byte_size_.load(
+        std::memory_order_relaxed));
+    ::google::protobuf::internal::WireFormatLite::WriteBoolArray(
+      this->barrier().data(), this->barrier_size(), output);
+  }
+
+  // repeated bool traffic_signal = 4;
+  if (this->traffic_signal_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(4, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(_traffic_signal_cached_byte_size_.load(
+        std::memory_order_relaxed));
+    ::google::protobuf::internal::WireFormatLite::WriteBoolArray(
+      this->traffic_signal().data(), this->traffic_signal_size(), output);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         _internal_metadata_.unknown_fields(), output);
@@ -741,6 +840,32 @@ void Nodes::SerializeWithCachedSizes(
          target);
     target = ::google::protobuf::internal::WireFormatLite::
       WriteUInt64NoTagToArray(this->osmid_, target);
+  }
+
+  // repeated bool barrier = 3;
+  if (this->barrier_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      3,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+        _barrier_cached_byte_size_.load(std::memory_order_relaxed),
+         target);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteBoolNoTagToArray(this->barrier_, target);
+  }
+
+  // repeated bool traffic_signal = 4;
+  if (this->traffic_signal_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      4,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+        _traffic_signal_cached_byte_size_.load(std::memory_order_relaxed),
+         target);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteBoolNoTagToArray(this->traffic_signal_, target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -790,6 +915,36 @@ size_t Nodes::ByteSizeLong() const {
     total_size += data_size;
   }
 
+  // repeated bool barrier = 3;
+  {
+    unsigned int count = static_cast<unsigned int>(this->barrier_size());
+    size_t data_size = 1UL * count;
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+            static_cast<::google::protobuf::int32>(data_size));
+    }
+    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
+    _barrier_cached_byte_size_.store(cached_size,
+                                    std::memory_order_relaxed);
+    total_size += data_size;
+  }
+
+  // repeated bool traffic_signal = 4;
+  {
+    unsigned int count = static_cast<unsigned int>(this->traffic_signal_size());
+    size_t data_size = 1UL * count;
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+            static_cast<::google::protobuf::int32>(data_size));
+    }
+    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
+    _traffic_signal_cached_byte_size_.store(cached_size,
+                                    std::memory_order_relaxed);
+    total_size += data_size;
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -819,6 +974,8 @@ void Nodes::MergeFrom(const Nodes& from) {
 
   latlon_.MergeFrom(from.latlon_);
   osmid_.MergeFrom(from.osmid_);
+  barrier_.MergeFrom(from.barrier_);
+  traffic_signal_.MergeFrom(from.traffic_signal_);
 }
 
 void Nodes::CopyFrom(const ::google::protobuf::Message& from) {
@@ -848,6 +1005,8 @@ void Nodes::InternalSwap(Nodes* other) {
   _internal_metadata_.Swap(&other->_internal_metadata_);
   CastToBase(&latlon_)->InternalSwap(CastToBase(&other->latlon_));
   osmid_.InternalSwap(&other->osmid_);
+  barrier_.InternalSwap(&other->barrier_);
+  traffic_signal_.InternalSwap(&other->traffic_signal_);
 }
 
 ::google::protobuf::Metadata Nodes::GetMetadata() const {

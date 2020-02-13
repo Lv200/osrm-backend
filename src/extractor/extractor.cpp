@@ -268,7 +268,8 @@ int Extractor::run(ScriptingEnvironment &scripting_environment)
     util::Log() << "Writing nodes for nodes-based and edges-based graphs ...";
     auto const &coordinates = node_based_graph_factory.GetCoordinates();
     files::writeNodes(
-        config.GetPath(".osrm.nbg_nodes"), coordinates, node_based_graph_factory.GetOsmNodes());
+        config.GetPath(".osrm.nbg_nodes"), coordinates, node_based_graph_factory.GetOsmNodes(), 
+        node_based_graph_factory.GetBarriers(), node_based_graph_factory.GetTrafficSignals());
     node_based_graph_factory.ReleaseOsmNodes();
 
     auto const &node_based_graph = node_based_graph_factory.GetGraph();
