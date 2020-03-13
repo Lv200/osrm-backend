@@ -5,6 +5,7 @@
 #include "extractor/maneuver_override.hpp"
 #include "extractor/nbg_to_ebg.hpp"
 #include "extractor/node_data_container.hpp"
+#include "extractor/profile_properties.hpp"
 
 #include "partitioner/bisection_to_partition.hpp"
 #include "partitioner/edge_based_graph.hpp"
@@ -53,8 +54,12 @@ inline void renumber(std::vector<Partition> &partitions,
 }
 
 inline void renumber(util::vector_view<extractor::EdgeBasedNodeSegment> &segments,
-                     const std::vector<std::uint32_t> &permutation)
+                     const std::vector<std::uint32_t> &permutation,
+                     const osrm::extractor::ProfileProperties &properties)
 {
+    const auto tunnel_index = properties.GetClassNameIndex("tunnel");
+    auto tunnel_mask = osrm::extractor::getClassData(tunnel_index);
+
     pbrtree::Segments pb_segments;
     for (auto &segment : segments)
     {
@@ -72,9 +77,17 @@ inline void renumber(util::vector_view<extractor::EdgeBasedNodeSegment> &segment
         pb_segment->set_forward_segment_id(segment.forward_segment_id.id);
         pb_segment->set_reverse_segment_id(segment.reverse_segment_id.id);
         pb_segment->set_forward_segment_position(segment.fwd_segment_position);
-
+        
+        // add way id
+        pb_segment->set_way_id(segment.way_id);
+        
+        // add tunnel info
+        bool forward_tunnel = tunnel_mask & segment.forward_classes;
+        bool reverse_tunnel = tunnel_mask & segment.reverse_classes;
+        pb_segment->set_forward_tunnel(forward_tunnel);
+        pb_segment->set_reverse_tunnel(reverse_tunnel);
     }
-    std::cout << "######## rtree segments: " << std::endl;
+    util::Log() << "######## rtree segments: ";
     std::fstream pb_out("1.rtree.segments.pb", std::ios::out | std::ios::binary);
     pb_segments.SerializeToOstream(&pb_out);
 }

@@ -202,6 +202,15 @@ NBGToEBG EdgeBasedGraphFactory::InsertEdgeBasedNode(const NodeID node_u, const N
             segregated_edges.count(edge_id_2) > 0;
     }
 
+    const WayID way_id = m_edge_based_node_container.GetAnnotation(forward_data.annotation_data).way_id;
+    const auto segment_classdata = [&](const NodeID edge_based_node_id) {
+        if (edge_based_node_id == SPECIAL_NODEID)
+        {
+            return ClassData(0);
+        }
+        return m_edge_based_node_container.GetClassData(edge_based_node_id);
+    };
+
     // Add segments of edge-based nodes
     for (const auto i : util::irange(std::size_t{0}, segment_count))
     {
@@ -223,6 +232,9 @@ NBGToEBG EdgeBasedGraphFactory::InsertEdgeBasedNode(const NodeID node_u, const N
             edge_id_to_segment_id(nbe_to_ebn_mapping[edge_id_2]),
             current_edge_source_coordinate_id,
             current_edge_target_coordinate_id,
+            segment_classdata(nbe_to_ebn_mapping[edge_id_1]),
+            segment_classdata(nbe_to_ebn_mapping[edge_id_2]),
+            way_id,
             i,
             forward_data.flags.startpoint || reverse_data.flags.startpoint);
 

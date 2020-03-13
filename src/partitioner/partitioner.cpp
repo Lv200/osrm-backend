@@ -133,10 +133,13 @@ int Partitioner::Run(const PartitionerConfig &config)
         extractor::files::writeNBGMapping(config.GetPath(".osrm.cnbg_to_ebg").string(), mapping);
     }
     {
+        osrm::extractor::ProfileProperties properties;
+        extractor::files::readProfileProperties(config.GetPath(".osrm.properties"), properties);
+        
         boost::iostreams::mapped_file segment_region;
         auto segments = util::mmapFile<extractor::EdgeBasedNodeSegment>(
             config.GetPath(".osrm.fileIndex"), segment_region);
-        renumber(segments, permutation);
+        renumber(segments, permutation, properties);
     }
     {
         extractor::EdgeBasedNodeDataContainer node_data;

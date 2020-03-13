@@ -65,6 +65,7 @@ struct NodeBasedEdgeClassification
 // see as part of the API output but that does not influence navigation
 struct NodeBasedEdgeAnnotation
 {
+    WayID way_id;                          // 64 8
     NameID name_id;                        // 32 4
     LaneDescriptionID lane_description_id; // 16 2
     ClassData classes;                     // 8  1

@@ -398,10 +398,13 @@ void ExtractorCallbacks::ProcessWay(const osmium::Way &input_way, const Extracti
          (turn_lane_id_forward != turn_lane_id_backward) || (forward_classes != backward_classes) ||
          (parsed_way.forward_ref != parsed_way.backward_ref));
 
+    // get way id
+    const auto way_id = input_way.id();
     if (in_forward_direction)
     { // add (forward) segments or (forward,backward) for non-split edges in backward direction
         const auto annotation_data_id = external_memory.all_edges_annotation_data_list.size();
-        external_memory.all_edges_annotation_data_list.push_back({forward_name_id,
+        external_memory.all_edges_annotation_data_list.push_back({way_id,
+                                                                  forward_name_id,
                                                                   turn_lane_id_forward,
                                                                   forward_classes,
                                                                   parsed_way.forward_travel_mode,
@@ -437,7 +440,8 @@ void ExtractorCallbacks::ProcessWay(const osmium::Way &input_way, const Extracti
     if (in_backward_direction && (!in_forward_direction || split_edge))
     { // add (backward) segments for split edges or not in forward direction
         const auto annotation_data_id = external_memory.all_edges_annotation_data_list.size();
-        external_memory.all_edges_annotation_data_list.push_back({backward_name_id,
+        external_memory.all_edges_annotation_data_list.push_back({way_id,
+                                                                  backward_name_id,
                                                                   turn_lane_id_backward,
                                                                   backward_classes,
                                                                   parsed_way.backward_travel_mode,

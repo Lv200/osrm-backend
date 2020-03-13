@@ -10,6 +10,9 @@ message Segment {
     uint32 forward_segment_position = 5;
     bool forward_enabled = 6;
     bool reverse_enabled = 7;
+    int64 way_id = 8;
+    bool forward_tunnel = 9;
+    bool reverse_tunnel = 10;
 }
 
 message Rectangle {

@@ -215,6 +215,24 @@ class Segment :
   bool reverse_enabled() const;
   void set_reverse_enabled(bool value);
 
+  // bool forward_tunnel = 9;
+  void clear_forward_tunnel();
+  static const int kForwardTunnelFieldNumber = 9;
+  bool forward_tunnel() const;
+  void set_forward_tunnel(bool value);
+
+  // bool reverse_tunnel = 10;
+  void clear_reverse_tunnel();
+  static const int kReverseTunnelFieldNumber = 10;
+  bool reverse_tunnel() const;
+  void set_reverse_tunnel(bool value);
+
+  // int64 way_id = 8;
+  void clear_way_id();
+  static const int kWayIdFieldNumber = 8;
+  ::google::protobuf::int64 way_id() const;
+  void set_way_id(::google::protobuf::int64 value);
+
   // @@protoc_insertion_point(class_scope:pbrtree.Segment)
  private:
   class HasBitSetters;
@@ -227,6 +245,9 @@ class Segment :
   ::google::protobuf::uint32 forward_segment_position_;
   bool forward_enabled_;
   bool reverse_enabled_;
+  bool forward_tunnel_;
+  bool reverse_tunnel_;
+  ::google::protobuf::int64 way_id_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_rtree_2eproto;
 };
@@ -835,6 +856,48 @@ inline void Segment::set_reverse_enabled(bool value) {
   
   reverse_enabled_ = value;
   // @@protoc_insertion_point(field_set:pbrtree.Segment.reverse_enabled)
+}
+
+// int64 way_id = 8;
+inline void Segment::clear_way_id() {
+  way_id_ = PROTOBUF_LONGLONG(0);
+}
+inline ::google::protobuf::int64 Segment::way_id() const {
+  // @@protoc_insertion_point(field_get:pbrtree.Segment.way_id)
+  return way_id_;
+}
+inline void Segment::set_way_id(::google::protobuf::int64 value) {
+  
+  way_id_ = value;
+  // @@protoc_insertion_point(field_set:pbrtree.Segment.way_id)
+}
+
+// bool forward_tunnel = 9;
+inline void Segment::clear_forward_tunnel() {
+  forward_tunnel_ = false;
+}
+inline bool Segment::forward_tunnel() const {
+  // @@protoc_insertion_point(field_get:pbrtree.Segment.forward_tunnel)
+  return forward_tunnel_;
+}
+inline void Segment::set_forward_tunnel(bool value) {
+  
+  forward_tunnel_ = value;
+  // @@protoc_insertion_point(field_set:pbrtree.Segment.forward_tunnel)
+}
+
+// bool reverse_tunnel = 10;
+inline void Segment::clear_reverse_tunnel() {
+  reverse_tunnel_ = false;
+}
+inline bool Segment::reverse_tunnel() const {
+  // @@protoc_insertion_point(field_get:pbrtree.Segment.reverse_tunnel)
+  return reverse_tunnel_;
+}
+inline void Segment::set_reverse_tunnel(bool value) {
+  
+  reverse_tunnel_ = value;
+  // @@protoc_insertion_point(field_set:pbrtree.Segment.reverse_tunnel)
 }
 
 // -------------------------------------------------------------------

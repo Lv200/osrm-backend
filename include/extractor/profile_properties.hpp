@@ -110,6 +110,17 @@ struct ProfileProperties
         return std::string(*name_it);
     }
 
+    // find the index of the class_names
+    std::size_t GetClassNameIndex(const std::string &name) const
+    {
+        for(auto iter = class_names.begin(); iter != class_names.end(); iter++){
+            if(std::string(*iter) == name){
+                return std::distance(class_names.begin(), iter);
+            }
+        }
+        return class_names.size();
+    }
+
     double GetWeightMultiplier() const { return std::pow(10., weight_precision); }
 
     double GetMaxTurnWeight() const
