@@ -139,6 +139,9 @@ const ::google::protobuf::uint32 TableStruct_rtree_2eproto::offsets[] PROTOBUF_S
   PROTOBUF_FIELD_OFFSET(::pbrtree::Segment, forward_segment_position_),
   PROTOBUF_FIELD_OFFSET(::pbrtree::Segment, forward_enabled_),
   PROTOBUF_FIELD_OFFSET(::pbrtree::Segment, reverse_enabled_),
+  PROTOBUF_FIELD_OFFSET(::pbrtree::Segment, way_id_),
+  PROTOBUF_FIELD_OFFSET(::pbrtree::Segment, forward_tunnel_),
+  PROTOBUF_FIELD_OFFSET(::pbrtree::Segment, reverse_tunnel_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::pbrtree::Rectangle, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -171,10 +174,10 @@ const ::google::protobuf::uint32 TableStruct_rtree_2eproto::offsets[] PROTOBUF_S
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::pbrtree::Segment)},
-  { 12, -1, sizeof(::pbrtree::Rectangle)},
-  { 21, -1, sizeof(::pbrtree::LeafNode)},
-  { 29, -1, sizeof(::pbrtree::Leaves)},
-  { 35, -1, sizeof(::pbrtree::Segments)},
+  { 15, -1, sizeof(::pbrtree::Rectangle)},
+  { 24, -1, sizeof(::pbrtree::LeafNode)},
+  { 32, -1, sizeof(::pbrtree::Leaves)},
+  { 38, -1, sizeof(::pbrtree::Segments)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -192,23 +195,25 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
 };
 
 const char descriptor_table_protodef_rtree_2eproto[] =
-  "\n\013rtree.proto\022\007pbrtree\"\253\001\n\007Segment\022\t\n\001u\030"
+  "\n\013rtree.proto\022\007pbrtree\"\353\001\n\007Segment\022\t\n\001u\030"
   "\001 \001(\r\022\t\n\001v\030\002 \001(\r\022\032\n\022forward_segment_id\030\003"
   " \001(\r\022\032\n\022reverse_segment_id\030\004 \001(\r\022 \n\030forw"
   "ard_segment_position\030\005 \001(\r\022\027\n\017forward_en"
-  "abled\030\006 \001(\010\022\027\n\017reverse_enabled\030\007 \001(\010\"O\n\t"
-  "Rectangle\022\017\n\007min_lat\030\001 \001(\004\022\017\n\007min_lon\030\002 "
-  "\001(\004\022\017\n\007max_lat\030\003 \001(\004\022\017\n\007max_lon\030\004 \001(\004\"h\n"
-  "\010LeafNode\0226\n\032minimum_bounding_rectangle\030"
-  "\001 \001(\0132\022.pbrtree.Rectangle\022\022\n\nindexStart\030"
-  "\002 \001(\r\022\020\n\010indexEnd\030\003 \001(\r\"*\n\006Leaves\022 \n\005ite"
-  "ms\030\001 \003(\0132\021.pbrtree.LeafNode\"+\n\010Segments\022"
-  "\037\n\005items\030\001 \003(\0132\020.pbrtree.Segmentb\006proto3"
+  "abled\030\006 \001(\010\022\027\n\017reverse_enabled\030\007 \001(\010\022\016\n\006"
+  "way_id\030\010 \001(\003\022\026\n\016forward_tunnel\030\t \001(\010\022\026\n\016"
+  "reverse_tunnel\030\n \001(\010\"O\n\tRectangle\022\017\n\007min"
+  "_lat\030\001 \001(\004\022\017\n\007min_lon\030\002 \001(\004\022\017\n\007max_lat\030\003"
+  " \001(\004\022\017\n\007max_lon\030\004 \001(\004\"h\n\010LeafNode\0226\n\032min"
+  "imum_bounding_rectangle\030\001 \001(\0132\022.pbrtree."
+  "Rectangle\022\022\n\nindexStart\030\002 \001(\r\022\020\n\010indexEn"
+  "d\030\003 \001(\r\"*\n\006Leaves\022 \n\005items\030\001 \003(\0132\021.pbrtr"
+  "ee.LeafNode\"+\n\010Segments\022\037\n\005items\030\001 \003(\0132\020"
+  ".pbrtree.Segmentb\006proto3"
   ;
 ::google::protobuf::internal::DescriptorTable descriptor_table_rtree_2eproto = {
   false, InitDefaults_rtree_2eproto, 
   descriptor_table_protodef_rtree_2eproto,
-  "rtree.proto", &assign_descriptors_table_rtree_2eproto, 480,
+  "rtree.proto", &assign_descriptors_table_rtree_2eproto, 544,
 };
 
 void AddDescriptors_rtree_2eproto() {
@@ -238,6 +243,9 @@ const int Segment::kReverseSegmentIdFieldNumber;
 const int Segment::kForwardSegmentPositionFieldNumber;
 const int Segment::kForwardEnabledFieldNumber;
 const int Segment::kReverseEnabledFieldNumber;
+const int Segment::kWayIdFieldNumber;
+const int Segment::kForwardTunnelFieldNumber;
+const int Segment::kReverseTunnelFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Segment::Segment()
@@ -250,15 +258,15 @@ Segment::Segment(const Segment& from)
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&u_, &from.u_,
-    static_cast<size_t>(reinterpret_cast<char*>(&reverse_enabled_) -
-    reinterpret_cast<char*>(&u_)) + sizeof(reverse_enabled_));
+    static_cast<size_t>(reinterpret_cast<char*>(&way_id_) -
+    reinterpret_cast<char*>(&u_)) + sizeof(way_id_));
   // @@protoc_insertion_point(copy_constructor:pbrtree.Segment)
 }
 
 void Segment::SharedCtor() {
   ::memset(&u_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&reverse_enabled_) -
-      reinterpret_cast<char*>(&u_)) + sizeof(reverse_enabled_));
+      reinterpret_cast<char*>(&way_id_) -
+      reinterpret_cast<char*>(&u_)) + sizeof(way_id_));
 }
 
 Segment::~Segment() {
@@ -285,8 +293,8 @@ void Segment::Clear() {
   (void) cached_has_bits;
 
   ::memset(&u_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&reverse_enabled_) -
-      reinterpret_cast<char*>(&u_)) + sizeof(reverse_enabled_));
+      reinterpret_cast<char*>(&way_id_) -
+      reinterpret_cast<char*>(&u_)) + sizeof(way_id_));
   _internal_metadata_.Clear();
 }
 
@@ -349,6 +357,27 @@ const char* Segment::_InternalParse(const char* begin, const char* end, void* ob
       case 7: {
         if (static_cast<::google::protobuf::uint8>(tag) != 56) goto handle_unusual;
         msg->set_reverse_enabled(::google::protobuf::internal::ReadVarint(&ptr));
+        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+        break;
+      }
+      // int64 way_id = 8;
+      case 8: {
+        if (static_cast<::google::protobuf::uint8>(tag) != 64) goto handle_unusual;
+        msg->set_way_id(::google::protobuf::internal::ReadVarint(&ptr));
+        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+        break;
+      }
+      // bool forward_tunnel = 9;
+      case 9: {
+        if (static_cast<::google::protobuf::uint8>(tag) != 72) goto handle_unusual;
+        msg->set_forward_tunnel(::google::protobuf::internal::ReadVarint(&ptr));
+        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+        break;
+      }
+      // bool reverse_tunnel = 10;
+      case 10: {
+        if (static_cast<::google::protobuf::uint8>(tag) != 80) goto handle_unusual;
+        msg->set_reverse_tunnel(::google::protobuf::internal::ReadVarint(&ptr));
         GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
         break;
       }
@@ -470,6 +499,45 @@ bool Segment::MergePartialFromCodedStream(
         break;
       }
 
+      // int64 way_id = 8;
+      case 8: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (64 & 0xFF)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &way_id_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool forward_tunnel = 9;
+      case 9: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (72 & 0xFF)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &forward_tunnel_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool reverse_tunnel = 10;
+      case 10: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (80 & 0xFF)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &reverse_tunnel_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -532,6 +600,21 @@ void Segment::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(7, this->reverse_enabled(), output);
   }
 
+  // int64 way_id = 8;
+  if (this->way_id() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(8, this->way_id(), output);
+  }
+
+  // bool forward_tunnel = 9;
+  if (this->forward_tunnel() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(9, this->forward_tunnel(), output);
+  }
+
+  // bool reverse_tunnel = 10;
+  if (this->reverse_tunnel() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(10, this->reverse_tunnel(), output);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         _internal_metadata_.unknown_fields(), output);
@@ -578,6 +661,21 @@ void Segment::SerializeWithCachedSizes(
   // bool reverse_enabled = 7;
   if (this->reverse_enabled() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(7, this->reverse_enabled(), target);
+  }
+
+  // int64 way_id = 8;
+  if (this->way_id() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(8, this->way_id(), target);
+  }
+
+  // bool forward_tunnel = 9;
+  if (this->forward_tunnel() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(9, this->forward_tunnel(), target);
+  }
+
+  // bool reverse_tunnel = 10;
+  if (this->reverse_tunnel() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(10, this->reverse_tunnel(), target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -646,6 +744,23 @@ size_t Segment::ByteSizeLong() const {
     total_size += 1 + 1;
   }
 
+  // bool forward_tunnel = 9;
+  if (this->forward_tunnel() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // bool reverse_tunnel = 10;
+  if (this->reverse_tunnel() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // int64 way_id = 8;
+  if (this->way_id() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->way_id());
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
@@ -694,6 +809,15 @@ void Segment::MergeFrom(const Segment& from) {
   if (from.reverse_enabled() != 0) {
     set_reverse_enabled(from.reverse_enabled());
   }
+  if (from.forward_tunnel() != 0) {
+    set_forward_tunnel(from.forward_tunnel());
+  }
+  if (from.reverse_tunnel() != 0) {
+    set_reverse_tunnel(from.reverse_tunnel());
+  }
+  if (from.way_id() != 0) {
+    set_way_id(from.way_id());
+  }
 }
 
 void Segment::CopyFrom(const ::google::protobuf::Message& from) {
@@ -728,6 +852,9 @@ void Segment::InternalSwap(Segment* other) {
   swap(forward_segment_position_, other->forward_segment_position_);
   swap(forward_enabled_, other->forward_enabled_);
   swap(reverse_enabled_, other->reverse_enabled_);
+  swap(forward_tunnel_, other->forward_tunnel_);
+  swap(reverse_tunnel_, other->reverse_tunnel_);
+  swap(way_id_, other->way_id_);
 }
 
 ::google::protobuf::Metadata Segment::GetMetadata() const {

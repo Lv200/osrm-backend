@@ -73,6 +73,7 @@ using NodeID = std::uint32_t;
 using EdgeID = std::uint32_t;
 using NameID = std::uint32_t;
 using AnnotationID = std::uint32_t;
+using WayID = std::int64_t;
 using EdgeWeight = std::int32_t;
 using EdgeDuration = std::int32_t;
 using EdgeDistance = float;
