@@ -106,6 +106,8 @@ inline void write(storage::tar::FileWriter &writer,
         pb_graph.add_node_distances(i);
      }
 
+     
+
      std::fstream pb_out("1.mld.graph.pb", std::ios::out | std::ios::binary);
      pb_graph.SerializeToOstream(&pb_out);
 }

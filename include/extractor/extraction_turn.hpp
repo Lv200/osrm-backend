@@ -61,6 +61,7 @@ struct ExtractionTurn
                    int source_access_turn_classification,
                    int source_speed,
                    RoadPriorityClass::Enum source_priority_class,
+                   NodeID source_geometry,
 
                    bool target_restricted,
                    TravelMode target_mode,
@@ -71,6 +72,7 @@ struct ExtractionTurn
                    int target_access_turn_classification,
                    int target_speed,
                    RoadPriorityClass::Enum target_priority_class,
+                   NodeID target_geometry,
 
                    const std::vector<ExtractionTurnLeg> &roads_on_the_right,
                    const std::vector<ExtractionTurnLeg> &roads_on_the_left)
@@ -83,6 +85,7 @@ struct ExtractionTurn
           source_highway_turn_classification(source_highway_turn_classification),
           source_access_turn_classification(source_access_turn_classification),
           source_speed(source_speed), source_priority_class(source_priority_class),
+          source_geometry(source_geometry),
 
           target_restricted(target_restricted), target_mode(target_mode),
           target_is_motorway(target_is_motorway), target_is_link(target_is_link),
@@ -90,7 +93,8 @@ struct ExtractionTurn
           target_highway_turn_classification(target_highway_turn_classification),
           target_access_turn_classification(target_access_turn_classification),
           target_speed(target_speed), target_priority_class(target_priority_class),
-
+          target_geometry(target_geometry),
+          
           roads_on_the_right(roads_on_the_right), roads_on_the_left(roads_on_the_left), weight(0.),
           duration(0.)
 
@@ -112,6 +116,7 @@ struct ExtractionTurn
     const int source_access_turn_classification;
     const int source_speed;
     const RoadPriorityClass::Enum source_priority_class;
+    const NodeID source_geometry;
 
     // target info
     const bool target_restricted;
@@ -123,6 +128,7 @@ struct ExtractionTurn
     const int target_access_turn_classification;
     const int target_speed;
     const RoadPriorityClass::Enum target_priority_class;
+    const NodeID target_geometry;
 
     const std::vector<ExtractionTurnLeg> roads_on_the_right;
     const std::vector<ExtractionTurnLeg> roads_on_the_left;

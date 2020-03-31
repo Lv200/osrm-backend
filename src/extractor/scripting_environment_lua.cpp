@@ -620,7 +620,11 @@ void Sol2ScriptingEnvironment::InitContext(LuaScriptingContext &context)
             "target_restricted",
             &ExtractionTurn::target_restricted,
             "is_left_hand_driving",
-            &ExtractionTurn::is_left_hand_driving);
+            &ExtractionTurn::is_left_hand_driving,
+            "source_geometry",
+            &ExtractionTurn::source_geometry,
+            "target_geometry",
+            &ExtractionTurn::target_geometry);
 
         context.state.new_enum("turn_type",
                                "invalid",
@@ -755,6 +759,8 @@ void Sol2ScriptingEnvironment::InitContext(LuaScriptingContext &context)
             &ExtractionTurn::source_speed,
             "source_priority_class",
             &ExtractionTurn::source_priority_class,
+            "source_geometry",
+            &ExtractionTurn::source_geometry,
 
             "target_restricted",
             &ExtractionTurn::target_restricted,
@@ -774,6 +780,8 @@ void Sol2ScriptingEnvironment::InitContext(LuaScriptingContext &context)
             &ExtractionTurn::target_speed,
             "target_priority_class",
             &ExtractionTurn::target_priority_class,
+            "target_geometry",
+            &ExtractionTurn::target_geometry,
 
             "roads_on_the_right",
             &ExtractionTurn::roads_on_the_right,

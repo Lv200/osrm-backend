@@ -238,6 +238,7 @@ void GraphCompressor::Compress(
                                                    0,
                                                    0,
                                                    0,
+                                                   fwd_edge_data1.geometry_id.id,
                                                    false,
                                                    TRAVEL_MODE_DRIVING,
                                                    false,
@@ -247,6 +248,7 @@ void GraphCompressor::Compress(
                                                    0,
                                                    0,
                                                    0,
+                                                   fwd_edge_data2.geometry_id.id,
                                                    roads_on_the_right,
                                                    roads_on_the_left);
                     scripting_environment.ProcessTurn(extraction_turn);
