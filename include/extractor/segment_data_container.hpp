@@ -63,6 +63,7 @@ template <storage::Ownership Ownership> class SegmentDataContainerImpl
     using SegmentDistanceVector = PackedVector<SegmentDistance, SEGMENT_DISTANCE_BITS>;
     using SegmentDatasourceVector = Vector<DatasourceID>;
     using SegmentRoadClassVector = Vector<RoadPriorityClass::Enum>;
+    using SegmentWayIDVector = Vector<WayID>;
 
     SegmentDataContainerImpl() = default;
 
@@ -74,12 +75,13 @@ template <storage::Ownership Ownership> class SegmentDataContainerImpl
                              SegmentDurationVector rev_durations_,
                              SegmentDistanceVector distances_,
                              SegmentRoadClassVector road_classes_,
+                             SegmentWayIDVector wayIDs_,
                              SegmentDatasourceVector fwd_datasources_,
                              SegmentDatasourceVector rev_datasources_)
         : index(std::move(index_)), nodes(std::move(nodes_)), fwd_weights(std::move(fwd_weights_)),
           rev_weights(std::move(rev_weights_)), fwd_durations(std::move(fwd_durations_)),
           rev_durations(std::move(rev_durations_)), distances(std::move(distances_)), 
-          road_classes(std::move(road_classes_)), fwd_datasources(std::move(fwd_datasources_)),
+          road_classes(std::move(road_classes_)), wayIDs(std::move(wayIDs_)), fwd_datasources(std::move(fwd_datasources_)),
           rev_datasources(std::move(rev_datasources_))
     {
     }
@@ -107,10 +109,18 @@ template <storage::Ownership Ownership> class SegmentDataContainerImpl
 
     auto GetRoadClasses(const DirectionalGeometryID id)
     {
-        const auto begin = road_classes.cbegin() + index[id];
-        const auto end = road_classes.cbegin() + index[id + 1] - 1;
+        const auto begin = road_classes.begin() + index[id];
+        const auto end = road_classes.begin() + index[id + 1] - 1;
 
-        return boost::adaptors::reverse(boost::make_iterator_range(begin, end));
+        return boost::make_iterator_range(begin, end);
+    }
+
+    auto GetWayIDs(const DirectionalGeometryID id)
+    {
+        const auto begin = wayIDs.begin() + index[id];
+        const auto end = wayIDs.begin() + index[id + 1] - 1;
+
+        return boost::make_iterator_range(begin, end);
     }
 
     auto GetForwardDurations(const DirectionalGeometryID id)
@@ -219,7 +229,15 @@ template <storage::Ownership Ownership> class SegmentDataContainerImpl
         const auto begin = road_classes.cbegin() + index[id];
         const auto end = road_classes.cbegin() + index[id + 1] - 1;
 
-        return boost::adaptors::reverse(boost::make_iterator_range(begin, end));
+        return boost::make_iterator_range(begin, end);
+    }
+
+    auto GetWayIDs(const DirectionalGeometryID id) const
+    {
+        const auto begin = wayIDs.cbegin() + index[id];
+        const auto end = wayIDs.cbegin() + index[id + 1] - 1;
+
+        return boost::make_iterator_range(begin, end);
     }
 
     auto GetForwardDatasources(const DirectionalGeometryID id) const
@@ -259,6 +277,7 @@ template <storage::Ownership Ownership> class SegmentDataContainerImpl
     SegmentDurationVector rev_durations;
     SegmentDistanceVector distances;
     SegmentRoadClassVector road_classes;
+    SegmentWayIDVector wayIDs;
     SegmentDatasourceVector fwd_datasources;
     SegmentDatasourceVector rev_datasources;
 };

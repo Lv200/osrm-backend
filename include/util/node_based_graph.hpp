@@ -23,7 +23,7 @@ struct NodeBasedEdgeData
     NodeBasedEdgeData()
         : weight(INVALID_EDGE_WEIGHT), duration(INVALID_EDGE_WEIGHT),
           distance(INVALID_EDGE_DISTANCE), geometry_id({0, false}), reversed(false),
-          annotation_data(-1)
+          annotation_data(-1), way_id(0)
     {
     }
 
@@ -33,9 +33,10 @@ struct NodeBasedEdgeData
                       GeometryID geometry_id,
                       bool reversed,
                       extractor::NodeBasedEdgeClassification flags,
-                      AnnotationID annotation_data)
+                      AnnotationID annotation_data,
+                      WayID way_id)
         : weight(weight), duration(duration), distance(distance), geometry_id(geometry_id),
-          reversed(reversed), flags(flags), annotation_data(annotation_data)
+          reversed(reversed), flags(flags), annotation_data(annotation_data), way_id(way_id)
     {
     }
 
@@ -46,6 +47,7 @@ struct NodeBasedEdgeData
     bool reversed : 1;
     extractor::NodeBasedEdgeClassification flags;
     AnnotationID annotation_data;
+    WayID way_id;
 };
 
 // Check if two edge data elements can be compressed into a single edge (i.e. match in terms of
@@ -87,6 +89,7 @@ NodeBasedDynamicGraphFromEdges(NodeID number_of_nodes,
             output_edge.data.distance = input_edge.distance;
             output_edge.data.flags = input_edge.flags;
             output_edge.data.annotation_data = input_edge.annotation_data;
+            output_edge.data.way_id = input_edge.way_id;
 
             BOOST_ASSERT(output_edge.data.weight > 0);
             BOOST_ASSERT(output_edge.data.duration > 0);

@@ -281,6 +281,16 @@ void GraphCompressor::Compress(
                 const auto rev_road_class2 = rev_edge_data2.flags.road_classification.GetPriority();
                 BOOST_ASSERT(rev_road_class1 == rev_road_class2);
 
+                const auto fwd_way_id1 = fwd_edge_data1.way_id;
+                const auto fwd_way_id2 = fwd_edge_data2.way_id;
+                BOOST_ASSERT(0 != fwd_way_id1);
+                BOOST_ASSERT(0 != fwd_way_id2);
+               
+                const auto rev_way_id1 = rev_edge_data1.way_id;
+                const auto rev_way_id2 = rev_edge_data2.way_id;
+                BOOST_ASSERT(0 != rev_way_id1);
+                BOOST_ASSERT(0 != rev_way_id2);
+
 //#ifndef NDEBUG
                 // Because distances are symmetrical, we only need one
                 // per edge - here we double-check that they match
@@ -340,6 +350,8 @@ void GraphCompressor::Compress(
                                                  forward_distance2,
                                                  fwd_road_class1,
                                                  fwd_road_class2,
+                                                 fwd_way_id1,
+                                                 fwd_way_id2,
                                                  node_weight_penalty,
                                                  node_duration_penalty);
                 geometry_compressor.CompressEdge(reverse_e1,
@@ -354,6 +366,8 @@ void GraphCompressor::Compress(
                                                  reverse_distance2,
                                                  rev_road_class1,
                                                  rev_road_class2,
+                                                 rev_way_id1,
+                                                 rev_way_id2,
                                                  node_weight_penalty,
                                                  node_duration_penalty);
             }
@@ -372,7 +386,7 @@ void GraphCompressor::Compress(
             const EdgeData &data = graph.GetEdgeData(edge_id);
             const NodeID target = graph.GetTarget(edge_id);
             const auto edge_road_class = data.flags.road_classification.GetPriority();
-            geometry_compressor.AddUncompressedEdge(edge_id, target, data.weight, data.duration, data.distance, edge_road_class);
+            geometry_compressor.AddUncompressedEdge(edge_id, target, data.weight, data.duration, data.distance, edge_road_class, data.way_id);
         }
     }
 }
