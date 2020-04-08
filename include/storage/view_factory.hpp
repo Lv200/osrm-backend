@@ -163,6 +163,9 @@ inline auto make_segment_data_view(const SharedDataIndex &index, const std::stri
     extractor::SegmentDataView::SegmentRoadClassVector road_class_list(
         make_vector_view<extractor::RoadPriorityClass::Enum>(index, name + "/road_classes/packed"));
 
+    extractor::SegmentDataView::SegmentWayIDVector way_id_list(
+            make_vector_view<WayID>(index, name + "/wayIDs/packed"));
+
     auto fwd_datasources_list =
         make_vector_view<DatasourceID>(index, name + "/forward_data_sources");
 
@@ -177,6 +180,7 @@ inline auto make_segment_data_view(const SharedDataIndex &index, const std::stri
                                       std::move(rev_duration_list),
                                       std::move(distance_list),
                                       std::move(road_class_list),
+                                      std::move(way_id_list),
                                       std::move(fwd_datasources_list),
                                       std::move(rev_datasources_list)};
 }

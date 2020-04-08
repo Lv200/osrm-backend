@@ -27,6 +27,7 @@ class CompressedEdgeContainer
         SegmentDuration duration; // the duration of the edge leading to this node
         SegmentDistance distance; // the distance of the edge leading to this node
         RoadPriorityClass::Enum road_class; // the road class of the edge
+        WayID way_id;
     };
 
     using OnewayEdgeBucket = std::vector<OnewayCompressedEdge>;
@@ -44,6 +45,8 @@ class CompressedEdgeContainer
                       const EdgeDistance distance2,
                       const RoadPriorityClass::Enum road_class_1,
                       const RoadPriorityClass::Enum road_class_2,
+                      const WayID way_id_1,
+                      const WayID way_id_2,
                       // node-penalties can be added before/or after the traversal of an edge which
                       // depends on whether we traverse the link forwards or backwards.
                       const EdgeWeight node_weight_penalty = INVALID_EDGE_WEIGHT,
@@ -54,7 +57,8 @@ class CompressedEdgeContainer
                              const SegmentWeight weight,
                              const SegmentWeight duration,
                              const SegmentDistance distance,
-                             const RoadPriorityClass::Enum road_class);
+                             const RoadPriorityClass::Enum road_class,
+                             const WayID way_id);
 
     void InitializeBothwayVector();
     unsigned ZipEdges(const unsigned f_edge_pos, const unsigned r_edge_pos);

@@ -126,6 +126,8 @@ void CompressedEdgeContainer::CompressEdge(const EdgeID edge_id_1,
                                            const EdgeDistance distance2,
                                            const RoadPriorityClass::Enum road_class_1,
                                            const RoadPriorityClass::Enum road_class_2,
+                                           const WayID way_id_1,
+                                           const WayID way_id_2,
                                            const EdgeWeight node_weight_penalty,
                                            const EdgeDuration node_duration_penalty)
 {
@@ -175,7 +177,7 @@ void CompressedEdgeContainer::CompressEdge(const EdgeID edge_id_1,
     if (was_empty)
     {
         edge_bucket_list1.emplace_back(
-            OnewayCompressedEdge{via_node_id, ClipWeight(weight1), ClipDuration(duration1), ClipDistance(distance1), road_class_1});
+            OnewayCompressedEdge{via_node_id, ClipWeight(weight1), ClipDuration(duration1), ClipDistance(distance1), road_class_1, way_id_1});
     }
 
     BOOST_ASSERT(0 < edge_bucket_list1.size());
@@ -189,7 +191,7 @@ void CompressedEdgeContainer::CompressEdge(const EdgeID edge_id_1,
         node_duration_penalty != MAXIMAL_EDGE_DURATION)
     {
         edge_bucket_list1.emplace_back(OnewayCompressedEdge{
-            via_node_id, ClipWeight(node_weight_penalty), ClipDuration(node_duration_penalty), ClipDistance(0.0), road_class_1});
+            via_node_id, ClipWeight(node_weight_penalty), ClipDuration(node_duration_penalty), ClipDistance(0.0), road_class_1, way_id_1});
     }
 
     if (HasEntryForID(edge_id_2))
@@ -218,7 +220,7 @@ void CompressedEdgeContainer::CompressEdge(const EdgeID edge_id_1,
     {
         // we are certain that the second edge is atomic.
         edge_bucket_list1.emplace_back(
-            OnewayCompressedEdge{target_node_id, ClipWeight(weight2), ClipDuration(duration2), ClipDistance(distance2), road_class_2});
+            OnewayCompressedEdge{target_node_id, ClipWeight(weight2), ClipDuration(duration2), ClipDistance(distance2), road_class_2, way_id_2});
     }
 }
 
@@ -227,7 +229,8 @@ void CompressedEdgeContainer::AddUncompressedEdge(const EdgeID edge_id,
                                                   const SegmentWeight weight,
                                                   const SegmentDuration duration,
                                                   const SegmentDistance distance,
-                                                  const RoadPriorityClass::Enum road_class)
+                                                  const RoadPriorityClass::Enum road_class,
+                                                  const WayID way_id)
 {
     // remove super-trivial geometries
     BOOST_ASSERT(SPECIAL_EDGEID != edge_id);
@@ -264,7 +267,7 @@ void CompressedEdgeContainer::AddUncompressedEdge(const EdgeID edge_id,
     if (edge_bucket_list.empty())
     {
         edge_bucket_list.emplace_back(
-            OnewayCompressedEdge{target_node_id, ClipWeight(weight), ClipDuration(duration), ClipDistance(distance), road_class});
+            OnewayCompressedEdge{target_node_id, ClipWeight(weight), ClipDuration(duration), ClipDistance(distance), road_class, way_id});
     }
 }
 
@@ -279,6 +282,7 @@ void CompressedEdgeContainer::InitializeBothwayVector()
     segment_data->rev_durations.reserve(m_compressed_oneway_geometries.size());
     segment_data->distances.reserve(m_compressed_oneway_geometries.size());
     segment_data->road_classes.reserve(m_compressed_oneway_geometries.size());
+    segment_data->wayIDs.reserve(m_compressed_oneway_geometries.size());
     segment_data->fwd_datasources.reserve(m_compressed_oneway_geometries.size());
     segment_data->rev_datasources.reserve(m_compressed_oneway_geometries.size());
 }
@@ -310,6 +314,7 @@ unsigned CompressedEdgeContainer::ZipEdges(const EdgeID f_edge_id, const EdgeID 
     segment_data->rev_durations.emplace_back(first_node.duration);
     segment_data->distances.emplace_back(INVALID_SEGMENT_DISTANCE);
     segment_data->road_classes.emplace_back(first_node.road_class);
+    segment_data->wayIDs.emplace_back(0);
     segment_data->fwd_datasources.emplace_back(LUA_SOURCE);
     segment_data->rev_datasources.emplace_back(LUA_SOURCE);
     
@@ -327,6 +332,7 @@ unsigned CompressedEdgeContainer::ZipEdges(const EdgeID f_edge_id, const EdgeID 
         segment_data->rev_durations.emplace_back(rev_node.duration);
         segment_data->distances.emplace_back(fwd_node.distance);
         segment_data->road_classes.emplace_back(fwd_node.road_class);
+        segment_data->wayIDs.emplace_back(fwd_node.way_id);
         segment_data->fwd_datasources.emplace_back(LUA_SOURCE);
         segment_data->rev_datasources.emplace_back(LUA_SOURCE);
     }
@@ -340,6 +346,7 @@ unsigned CompressedEdgeContainer::ZipEdges(const EdgeID f_edge_id, const EdgeID 
     segment_data->rev_durations.emplace_back(INVALID_SEGMENT_DURATION);
     segment_data->distances.emplace_back(last_node.distance);
     segment_data->road_classes.emplace_back(last_node.road_class);
+    segment_data->wayIDs.emplace_back(last_node.way_id);
     segment_data->fwd_datasources.emplace_back(LUA_SOURCE);
     segment_data->rev_datasources.emplace_back(LUA_SOURCE);
 
