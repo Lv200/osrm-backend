@@ -528,6 +528,10 @@ Extractor::ParseOSMData(ScriptingEnvironment &scripting_environment,
             return parsed_buffer;
         });
 
+    std::vector<wayInfo> wayInfos;
+    std::vector<std::vector<std::int64_t>> wayNodes;
+    unsigned int node_index = 0;
+
     // Parsed nodes and ways handler
     unsigned number_of_nodes = 0;
     unsigned number_of_ways = 0;
@@ -546,6 +550,16 @@ Extractor::ParseOSMData(ScriptingEnvironment &scripting_environment,
             for (const auto &result : parsed_buffer.resulting_ways)
             {
                 extractor_callbacks->ProcessWay(result.first, result.second);
+                //add wayID->nodes relationship into pb file
+                {
+                    std::vector<std::int64_t> nodes;
+                    for (const auto &node:result.first.nodes()){
+                        nodes.emplace_back(node.ref());
+                    }
+                    wayInfos.emplace_back(result.first.id(), node_index, nodes.size());
+                    node_index += nodes.size();
+                    wayNodes.emplace_back(std::move(nodes));
+                }
             }
 
             number_of_restrictions += parsed_buffer.resulting_restrictions.size();
@@ -641,6 +655,11 @@ Extractor::ParseOSMData(ScriptingEnvironment &scripting_environment,
                 << " ways, and " << number_of_relations << " relations, " << number_of_restrictions
                 << " restrictions";
 
+    std::sort(wayInfos.begin(), wayInfos.end(), 
+            [](const wayInfo &x, const wayInfo &y) {
+                return x.way_id < y.way_id;
+            });
+    files::writeWayNodes(wayInfos, wayNodes);
     extractor_callbacks.reset();
 
     if (extraction_containers.all_edges_list.empty())
