@@ -176,4 +176,14 @@ struct ComponentID
     std::uint32_t is_tiny : 1;
 };
 
+// record the related info of way
+struct wayInfo {
+    std::int64_t way_id; // id of way
+    std::uint32_t node_index; // index of the way's start node
+    std::uint32_t node_len; // length of the nodes in the way
+
+    wayInfo() {}
+    wayInfo(std::int64_t way_id_, std::uint32_t node_index_, std::uint32_t node_len_):way_id(way_id_), node_index(node_index_), node_len(node_len_){}
+};
+
 #endif /* TYPEDEFS_H */

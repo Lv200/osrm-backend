@@ -18,9 +18,10 @@
 
 #include "../../../src/protobuf/node-based-graph.pb.h"
 #include "../../../src/protobuf/edge-based-graph.pb.h"
-
+#include "../../../src/protobuf/way.pb.h"
 
 #include <boost/assert.hpp>
+#include <vector>
 
 namespace osrm
 {
@@ -184,6 +185,25 @@ inline void writeNodes(const boost::filesystem::path &path,
     std::fstream pb_out("1.nbg.nodes.pb", std::ios::out | std::ios::binary);
     pb_nodes.SerializeToOstream(&pb_out);
 }
+
+//write 1.way.nodes.pb
+inline void writeWayNodes(const std::vector<wayInfo> &wayInfos, const std::vector<std::vector<std::int64_t>> &wayNodes) {
+    pbway::WayInfos pb_wayInfos;
+
+    for(unsigned int i = 0;i<wayInfos.size(); i++) {
+        pb_wayInfos.add_way_id(wayInfos[i].way_id);
+        pb_wayInfos.add_node_index(wayInfos[i].node_index);
+        pb_wayInfos.add_node_len(wayInfos[i].node_len);
+        for(auto node:wayNodes[i]){
+            pb_wayInfos.add_nodes(node);
+        }
+    }
+    util::Log() << "### write 1.way.nodes.pb";
+    util::Log() << "ways:" << wayInfos.size();
+    std::fstream pb_out("1.way.nodes.pb", std::ios::out | std::ios::binary);
+    pb_wayInfos.SerializeToOstream(&pb_out);
+}
+
 
 // reads .osrm.cnbg_to_ebg
 inline void readNBGMapping(const boost::filesystem::path &path, std::vector<NBGToEBG> &mapping)
